@@ -1,0 +1,14 @@
+C:\Users\marcel\marcelduvivier\week1\HelloC#\bin\Debug\net9.0\HelloC#.exe
+C:\Users\marcel\marcelduvivier\week1\HelloC#\bin\Debug\net9.0\HelloC#.deps.json
+C:\Users\marcel\marcelduvivier\week1\HelloC#\bin\Debug\net9.0\HelloC#.runtimeconfig.json
+C:\Users\marcel\marcelduvivier\week1\HelloC#\bin\Debug\net9.0\HelloC#.dll
+C:\Users\marcel\marcelduvivier\week1\HelloC#\bin\Debug\net9.0\HelloC#.pdb
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.AssemblyInfoInputs.cache
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.AssemblyInfo.cs
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.csproj.CoreCompileInputs.cache
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.dll
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\refint\HelloC#.dll
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.pdb
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\HelloC#.genruntimeconfig.cache
+C:\Users\marcel\marcelduvivier\week1\HelloC#\obj\Debug\net9.0\ref\HelloC#.dll
