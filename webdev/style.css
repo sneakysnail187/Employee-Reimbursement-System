@@ -1,0 +1,17 @@
+
+:root{
+    --primary-color:rgb(237,225,225);
+}
+
+body{
+    background-color: rgb(229, 222, 214);
+    padding:0;
+}
+
+footer{
+    text-align: center;
+    background-color: rgb(50, 45, 45);
+    margin: 5em;
+    color: var(--primary-color);
+    padding:2em 4em;
+}
