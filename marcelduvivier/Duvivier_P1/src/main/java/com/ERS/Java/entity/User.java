@@ -3,7 +3,7 @@ package com.ERS.Java.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
     /*
     userId int primary key auto_increment,
