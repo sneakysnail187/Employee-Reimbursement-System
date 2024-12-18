@@ -10,6 +10,8 @@ public interface UserService {
     User loginUser(User user);
 
 
+    //add JWT/session for authentication
+
     //add additional methods in implementation
     //non logged user has just these 2
     //logged user adds 
