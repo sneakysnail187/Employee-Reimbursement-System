@@ -6,9 +6,9 @@ create table users (
     lastName varchar(255),
     username varchar(255),
     password varchar(255),
-    role varchar(255),
-    loggedIn bool default false
+    role varchar(255)
 );
+
 create table reimbursement (
     reimbursementId serial primary key,
     description varchar(255),

@@ -61,7 +61,7 @@ public class JwtService {
         return user;
     }//use response cookie in controller or throw it in responsebody or header
 
-    //dtos principal(returned to use) login request
+    //dtos principal(returned to user), login request, reimbursement request
 
     public Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);

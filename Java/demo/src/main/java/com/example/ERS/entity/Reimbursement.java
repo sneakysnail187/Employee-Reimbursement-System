@@ -15,7 +15,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="reimbursement")
 public class Reimbursement {
-    @Column(name="reimbursementId")
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer reimbursementId;

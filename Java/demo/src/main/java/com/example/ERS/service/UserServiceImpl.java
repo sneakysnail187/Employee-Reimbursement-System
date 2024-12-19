@@ -31,9 +31,11 @@ public class UserServiceImpl implements UserService {
     
     public User registerUser(User user) { // add duplicate username exception
         String jwt = jwtService.generateToken(user);
+        user.setPassword(jwt);
         if(user.getUsername() == "" || user.getPassword().length() < 4) {
             return null;
         }
+
         return userRepository.save(user);
     }
 
