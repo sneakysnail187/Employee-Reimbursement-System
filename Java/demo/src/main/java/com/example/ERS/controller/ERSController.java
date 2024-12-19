@@ -47,10 +47,10 @@ public class ERSController {
 
     @PostMapping("/login")
     public ResponseEntity loginUser(@RequestBody String username, @RequestBody String password) {
-        Optional<User> userOptional = Optional.ofNullable(userService.loginUser(username, password));
+        Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(username, password));
         //gen token from id
-        if(userOptional.isPresent()) {
-            String jwt = jwtService.generateToken(userOptional.get());
+        if(tokenOptional.isPresent()) {
+            String jwt = tokenOptional.get();
             return ResponseEntity.status(200).body(jwt);
         }
         return ResponseEntity.status(401).body(null);

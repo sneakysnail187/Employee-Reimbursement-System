@@ -7,7 +7,7 @@ import com.example.ERS.entity.Reimbursement;
 public interface UserService {
 
     User registerUser(User user);
-    User loginUser(String username, String password);
+    String loginUser(String username, String password);
 
 
     //add JWT/session for authentication

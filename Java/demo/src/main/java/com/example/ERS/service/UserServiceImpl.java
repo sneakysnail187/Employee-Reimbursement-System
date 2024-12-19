@@ -8,10 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder; 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -24,27 +24,32 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     JwtService jwtService;
-
-    @Autowired
-    @Lazy
-    PasswordEncoder encoder;
     
+    @Transactional
     public User registerUser(User user) { // add duplicate username exception
-        String jwt = jwtService.generateToken(user);
-        user.setPassword(jwt);
-        if(user.getUsername() == "" || user.getPassword().length() < 4) {
+        if(user.getUsername() == "" || user.getPassword().length() < 4 || 
+        userRepository.findUserByUsername(user.getUsername()) != null) {
             return null;
         }
-
-        return userRepository.save(user);
+        String hashedPassword = hashPassword(user.getPassword());
+        user.setPassword(hashedPassword);
+        User fin = userRepository.save(user);
+        userRepository.flush();
+        return fin;
     }
 
-    public User loginUser(String username, String password) {
+    public String loginUser(String username, String password) {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
         if(userOptional.isPresent() && password.equals(userOptional.get().getPassword())) {
-            return userOptional.get();
+            userOptional.get().getPassword();
+            String jwt = jwtService.generateToken(userOptional.get());
+            return jwt;
         }
         return null;
     }
     
+    private String hashPassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
+    }
 }

@@ -55,7 +55,7 @@ public class JwtService {
                 .getBody();
 
         User user = new User();
-        user.setUserId(claims.get("id", Integer.class));
+        user.setUserId(claims.get("userid", Integer.class));
         user.setUsername(claims.get("username", String.class));
 
         return user;

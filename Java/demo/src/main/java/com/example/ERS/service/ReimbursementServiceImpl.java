@@ -25,19 +25,26 @@ public class ReimbursementServiceImpl implements ReimbursementService {
     @Lazy
     UserRepository userRepository;
 
+    @Transactional
     public Reimbursement createReimbursement(Reimbursement reimbursement) {
-        if(!userRepository.existsById(reimbursement.getuserID()) || reimbursement.getdescription().length() > 255 || reimbursement.getamount() < 0) return null;
+        if(!userRepository.existsById(reimbursement.getuserID()) || 
+        reimbursement.getdescription().length() > 255 || 
+        reimbursement.getamount() < 0) return null;
+        
         return reimbursementRepository.save(reimbursement);
     }
 
+    @Transactional
     public List<Reimbursement> getAllReimbursements() {
         return reimbursementRepository.findAll();
     }
 
+    @Transactional
     public List<Reimbursement> getAllPendingReimbursements() {
         return reimbursementRepository.findByStatus("Pending");
     }
 
+    @Transactional
     public Reimbursement updateReimbursement(int id, String status) {
         Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
         if(reimbursementOptional.isPresent() && !status.equals("") && status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) {
@@ -47,7 +54,4 @@ public class ReimbursementServiceImpl implements ReimbursementService {
         } 
         return null;
     }
-
-
-    
 }
