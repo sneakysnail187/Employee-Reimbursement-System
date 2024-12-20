@@ -80,7 +80,15 @@ public class JwtService {
                 .get("id", Integer.class);
     }
 
-
+    public String getRoleFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("role", String.class);
+    }
+    
     //dtos principal(returned to user), login request, reimbursement request
 
     public Key getSigningKey() {

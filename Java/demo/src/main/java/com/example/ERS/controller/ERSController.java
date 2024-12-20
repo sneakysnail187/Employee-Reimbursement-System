@@ -15,7 +15,7 @@ import com.example.ERS.service.ReimbursementService;
 import com.example.ERS.service.UserService;
 import com.example.ERS.service.JwtService;
 import com.example.ERS.dto.response.LoginRequest;
-import com.example.ERS.dto.response.TicketRequest;
+import com.example.ERS.dto.response.EditRequest;
 
 
 @RestController
@@ -37,7 +37,7 @@ public class ERSController {
 
         Optional<User> userOptional = Optional.ofNullable(userService.registerUser(user));
         if(userOptional.isPresent()) {
-            return ResponseEntity.status(200).body(userOptional.toString());
+            return ResponseEntity.status(200).body(userOptional.get().toString());
         }
         return ResponseEntity.status(400).body(null);
     }
@@ -64,11 +64,14 @@ public class ERSController {
         return ResponseEntity.status(401).body(null);
     }
 
-    @PostMapping("/reimbursement/edit")
-    public ResponseEntity editTicket(@RequestBody String token, @RequestBody Integer id, @RequestBody String status) {
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, id, status));
+    @PatchMapping("/reimbursement/edit")
+    public ResponseEntity editTicket(@RequestHeader(name="authorization") String token, @RequestBody EditRequest ticket) {
+
+        System.out.println(ticket.toString());
+
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, ticket));
         if(reimbursementOptional.isPresent()) { 
-            return ResponseEntity.status(200).body(reimbursementOptional.toString());
+            return ResponseEntity.status(200).body(reimbursementOptional.get().toString());
         }
         return ResponseEntity.status(401).body(null);
     }

@@ -4,6 +4,7 @@ import com.example.ERS.entity.User;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.repository.UserRepository;
 import com.example.ERS.repository.ReimbursementRepository;
+import com.example.ERS.dto.response.EditRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -47,16 +48,19 @@ public class ReimbursementServiceImpl implements ReimbursementService {
     }
 
     @Transactional
-    public Reimbursement updateReimbursement(String token, int id, String status) {
-        User user = jwtService.decodeToken(token); // make optional for null user/bad token
+    public Reimbursement updateReimbursement(String token, EditRequest reimbursement) {
+        String role = jwtService.getRoleFromToken(token);
+        String status = reimbursement.getStatus();
 
-        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
+        //System.out.println(reimbursement.toString());
+
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
         if(reimbursementOptional.isPresent() &&
          (status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) &&
-          user.getRole().equals("Manager")) {
-            Reimbursement reimbursement = reimbursementOptional.get();
-            reimbursement.setStatus(status);
-            return reimbursementRepository.save(reimbursement);
+          role.equals("Manager")) {
+            Reimbursement reimbursementEdit = reimbursementOptional.get();
+            reimbursementEdit.setStatus(status);
+            return reimbursementRepository.save(reimbursementEdit);
         } 
         return null;
     }
