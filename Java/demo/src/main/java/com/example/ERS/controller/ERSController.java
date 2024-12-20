@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
@@ -19,6 +18,7 @@ import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.service.ReimbursementService;
 import com.example.ERS.service.UserService;
 import com.example.ERS.service.JwtService;
+import com.example.ERS.dto.response.LoginRequest;
 
 
 @RestController
@@ -46,8 +46,8 @@ public class ERSController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody String username, @RequestBody String password) {
-        Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(username, password));
+    public ResponseEntity loginUser(@RequestBody LoginRequest loginRequest) {
+        Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword())); 
         //gen token from id
         if(tokenOptional.isPresent()) {
             String jwt = tokenOptional.get();

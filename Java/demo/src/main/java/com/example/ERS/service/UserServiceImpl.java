@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.mindrot.jbcrypt.BCrypt;
+
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -40,7 +42,7 @@ public class UserServiceImpl implements UserService {
 
     public String loginUser(String username, String password) {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
-        if(userOptional.isPresent() && password.equals(userOptional.get().getPassword())) {
+        if(userOptional.isPresent() && hashPassword(password).equals(userOptional.get().getPassword())) {
             userOptional.get().getPassword();
             String jwt = jwtService.generateToken(userOptional.get());
             return jwt;
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
     }
     
     private String hashPassword(String password) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        return encoder.encode(password);
+        String salt = BCrypt.gensalt(); 
+        return BCrypt.hashpw(password, salt);
     }
 }
