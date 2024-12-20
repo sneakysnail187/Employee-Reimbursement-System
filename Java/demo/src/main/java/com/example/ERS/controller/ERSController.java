@@ -39,7 +39,7 @@ public class ERSController {
         if(userOptional.isPresent()) {
             return ResponseEntity.status(200).body(userOptional.get().toString());
         }
-        return ResponseEntity.status(400).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @PostMapping("/login")
