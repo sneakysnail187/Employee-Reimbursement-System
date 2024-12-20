@@ -25,13 +25,38 @@ public class ReimbursementServiceImpl implements ReimbursementService {
     @Lazy
     UserRepository userRepository;
 
+    @Autowired
+    @Lazy
+    JwtService jwtService;
+
+    @Autowired
+    @Lazy
+    UserService userService;
+
     @Transactional
-    public Reimbursement createReimbursement(Reimbursement reimbursement) {
+    public Reimbursement createReimbursement(String token, Reimbursement reimbursement) {
+        User user = userRepository.findById(reimbursement.getuserID()).get(); // make optional for null user
+
         if(!userRepository.existsById(reimbursement.getuserID()) || 
         reimbursement.getdescription().length() > 255 || 
-        reimbursement.getamount() < 0) return null;
-        
+        reimbursement.getamount() < 0 || jwtService.decodeToken(token) != user)  return null;
+
         return reimbursementRepository.save(reimbursement);
+    }
+
+    @Transactional
+    public Reimbursement updateReimbursement(String token, int id, String status) {
+        User user = jwtService.decodeToken(token); // make optional for null user/bad token
+
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
+        if(reimbursementOptional.isPresent() &&
+         (status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) &&
+          user.getRole().equals("Manager")) {
+            Reimbursement reimbursement = reimbursementOptional.get();
+            reimbursement.setstatus(status);
+            return reimbursementRepository.save(reimbursement);
+        } 
+        return null;
     }
 
     @Transactional
@@ -42,16 +67,5 @@ public class ReimbursementServiceImpl implements ReimbursementService {
     @Transactional
     public List<Reimbursement> getAllPendingReimbursements() {
         return reimbursementRepository.findByStatus("Pending");
-    }
-
-    @Transactional
-    public Reimbursement updateReimbursement(int id, String status) {
-        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
-        if(reimbursementOptional.isPresent() && !status.equals("") && status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) {
-            Reimbursement reimbursement = reimbursementOptional.get();
-            reimbursement.setstatus(status);
-            return reimbursementRepository.save(reimbursement);
-        } 
-        return null;
     }
 }

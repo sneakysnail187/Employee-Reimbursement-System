@@ -33,7 +33,10 @@ public class JwtService {
         return Jwts.builder()
                 .claim("id", user.getUserId())
                 .claim("username", user.getUsername())
-                // Add other fields
+                .claim("password", user.getPassword())
+                .claim("firstName", user.getFirstName())
+                .claim("lastName", user.getLastName())
+                .claim("role", user.getRole())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // 15 minutes
                 .signWith(getSigningKey())
@@ -57,6 +60,10 @@ public class JwtService {
         User user = new User();
         user.setUserId(claims.get("userid", Integer.class));
         user.setUsername(claims.get("username", String.class));
+        user.setPassword(claims.get("password", String.class));
+        user.setFirstName(claims.get("firstName", String.class));
+        user.setLastName(claims.get("lastName", String.class));
+        user.setRole(claims.get("role", String.class));
 
         return user;
     }//use response cookie in controller or throw it in responsebody or header
