@@ -51,7 +51,7 @@ public class ERSController {
             return ResponseEntity.status(200).body(jwt);
         }
         return ResponseEntity.status(401).body(null);
-    }
+    } //pass in a json not a string
 
     @PostMapping("/reimbursement")
     public ResponseEntity createTicket(@RequestHeader(name="authorization") String token, @RequestBody Reimbursement ticket) {
@@ -63,11 +63,10 @@ public class ERSController {
         }
         return ResponseEntity.status(401).body(null);
     }
+    //set status automatically not in postman
 
     @PatchMapping("/reimbursement/edit")
     public ResponseEntity editTicket(@RequestHeader(name="authorization") String token, @RequestBody EditRequest ticket) {
-
-        System.out.println(ticket.toString());
 
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, ticket));
         if(reimbursementOptional.isPresent()) { 
