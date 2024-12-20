@@ -55,6 +55,24 @@ public class ERSController {
         }
         return ResponseEntity.status(401).body(null);
     }
+
+    @PostMapping("/reimbursement")
+    public ResponseEntity createTicket(@RequestBody String token, @RequestBody Reimbursement reimbursement) {
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.createReimbursement(token, reimbursement));
+        if(reimbursementOptional.isPresent()) { 
+            return ResponseEntity.status(200).body(reimbursementOptional.toString());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
+    @PostMapping("/reimbursement/edit")
+    public ResponseEntity editTicket(@RequestBody String token, @RequestBody Integer id, @RequestBody String status) {
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, id, status));
+        if(reimbursementOptional.isPresent()) { 
+            return ResponseEntity.status(200).body(reimbursementOptional.toString());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
     //reimbursements will use the designated token
     //on returning use the reimb response  dto
 }
