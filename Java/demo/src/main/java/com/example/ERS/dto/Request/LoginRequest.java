@@ -1,4 +1,4 @@
-package com.example.ERS.dto.response;
+package com.example.ERS.dto.Request;
 
 public class LoginRequest {
     

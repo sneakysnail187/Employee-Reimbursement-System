@@ -33,7 +33,7 @@ public class Reimbursement {
     /**
      * A status for this Reimbursement 
      */
-    private String status;
+    private String status; // should be pending by default
     /*
      * The id of the requesting user
      */

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.example.ERS.entity.User;
+import com.example.ERS.entity.Role;
 
 import java.io.Console;
 import java.security.Key; 
@@ -64,9 +65,7 @@ public class JwtService {
         user.setPassword(claims.get("password", String.class));
         user.setFirstName(claims.get("firstName", String.class));
         user.setLastName(claims.get("lastName", String.class));
-        user.setRole(claims.get("role", String.class));
-
-        System.out.println(user.toString());
+        user.setRole(claims.get("role", Role.class));
 
         return user;
     }
@@ -80,13 +79,13 @@ public class JwtService {
                 .get("id", Integer.class);
     }
 
-    public String getRoleFromToken(String token) {
+    public Role getRoleFromToken(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(getSigningKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody()
-                .get("role", String.class);
+                .get("role", Role.class);
     }
     
     //dtos principal(returned to user), login request, reimbursement request

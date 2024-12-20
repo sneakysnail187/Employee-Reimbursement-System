@@ -3,6 +3,7 @@ package com.example.ERS.entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.example.ERS.entity.Role;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -28,18 +29,20 @@ public class User {
     private String lastName;
     private String username;
     private String password;
-    private String role;
+
+    @ManyToOne()
+    @JoinColumn(name = "role")
+    private Role role;
 
     @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Reimbursement> reimbursements;
 
-    public User (String firstName, String lastName, String username, String password, String role, List<Reimbursement> reimbursements) {
+    public User (String firstName, String lastName, String username, String password, Role role, List<Reimbursement> reimbursements) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
-        this.role = role;
     }
 
    

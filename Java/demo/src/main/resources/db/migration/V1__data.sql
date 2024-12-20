@@ -1,5 +1,6 @@
 drop table if exists users;
 drop table if exists reimbursement;
+drop table if exists role;
 create table users (
     userId serial primary key,
     firstName varchar(255),
@@ -7,6 +8,7 @@ create table users (
     username varchar(255),
     password varchar(255),
     role varchar(255)
+    foreign key (role) references role(role)
 );
 
 create table reimbursement (
@@ -14,6 +16,12 @@ create table reimbursement (
     description varchar(255),
     amount decimal(8,2),
     status varchar(255) not null,
+    userId int not null,
+    foreign key (userId) references users(userId)
+);
+
+create table roles (
+    role varchar(255) default 'Employee',
     userId int not null,
     foreign key (userId) references users(userId)
 );

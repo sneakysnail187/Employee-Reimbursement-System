@@ -1,10 +1,12 @@
 package com.example.ERS.service;
 
 import com.example.ERS.entity.User;
+import com.example.ERS.entity.Role;
+import com.example.ERS.dto.Request.EditRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.repository.UserRepository;
 import com.example.ERS.repository.ReimbursementRepository;
-import com.example.ERS.dto.response.EditRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -49,15 +51,13 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 
     @Transactional
     public Reimbursement updateReimbursement(String token, EditRequest reimbursement) {
-        String role = jwtService.getRoleFromToken(token);
+        Role role = jwtService.getRoleFromToken(token);
         String status = reimbursement.getStatus();
-
-        //System.out.println(reimbursement.toString());
 
         Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
         if(reimbursementOptional.isPresent() &&
          (status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) &&
-          role.equals("Manager")) {
+          role.getRole().equals("Manager")) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
             reimbursementEdit.setStatus(status);
             return reimbursementRepository.save(reimbursementEdit);
