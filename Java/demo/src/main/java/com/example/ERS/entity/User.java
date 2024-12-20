@@ -38,7 +38,7 @@ public class User {
     @JsonManagedReference
     private List<Reimbursement> reimbursements;
 
-    public User (String firstName, String lastName, String username, String password, Role role, List<Reimbursement> reimbursements) {
+    public User (String firstName, String lastName, String username, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
