@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.example.ERS.entity.User;
-  
+
+import java.io.Console;
 import java.security.Key; 
 import java.util.Date; 
 import java.util.HashMap; 
@@ -58,15 +59,27 @@ public class JwtService {
                 .getBody();
 
         User user = new User();
-        user.setUserId(claims.get("userid", Integer.class));
+        user.setUserId(claims.get("id", Integer.class));
         user.setUsername(claims.get("username", String.class));
         user.setPassword(claims.get("password", String.class));
         user.setFirstName(claims.get("firstName", String.class));
         user.setLastName(claims.get("lastName", String.class));
         user.setRole(claims.get("role", String.class));
 
+        System.out.println(user.toString());
+
         return user;
-    }//use response cookie in controller or throw it in responsebody or header
+    }
+    
+    public Integer getIdFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("id", Integer.class);
+    }
+
 
     //dtos principal(returned to user), login request, reimbursement request
 

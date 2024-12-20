@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
 
 import com.example.ERS.entity.User;
+import com.example.ERS.dto.response.LoginRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.service.ReimbursementService;
 import com.example.ERS.service.UserService;
 import com.example.ERS.service.JwtService;
+import com.example.ERS.dto.response.LoginRequest;
+import com.example.ERS.dto.response.TicketRequest;
 
 
 @RestController
@@ -40,8 +43,8 @@ public class ERSController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity loginUser(@RequestBody String username, @RequestBody String password) {
-        Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(username, password));
+    public ResponseEntity loginUser(@RequestBody LoginRequest loginRequest) {
+        Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword())); 
         //gen token from id
         if(tokenOptional.isPresent()) {
             String jwt = tokenOptional.get();
@@ -51,8 +54,10 @@ public class ERSController {
     }
 
     @PostMapping("/reimbursement")
-    public ResponseEntity createTicket(@RequestBody String token, @RequestBody Reimbursement reimbursement) {
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.createReimbursement(token, reimbursement));
+    public ResponseEntity createTicket(@RequestHeader(name="authorization") String token, @RequestBody Reimbursement ticket) {
+
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.createReimbursement(token, ticket));
+
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.toString());
         }

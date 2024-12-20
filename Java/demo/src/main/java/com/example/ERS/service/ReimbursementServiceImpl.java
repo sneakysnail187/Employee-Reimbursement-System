@@ -35,12 +35,14 @@ public class ReimbursementServiceImpl implements ReimbursementService {
 
     @Transactional
     public Reimbursement createReimbursement(String token, Reimbursement reimbursement) {
-        User user = userRepository.findById(reimbursement.getuserID()).get(); // make optional for null user
+        int id = jwtService.getIdFromToken(token);
+        Optional<User> userOptional = userRepository.findById(id);
+        
+        if(userOptional.isEmpty() || 
+        reimbursement.getDescription().length() > 255 || 
+        reimbursement.getAmount() < 0)  return null;
 
-        if(!userRepository.existsById(reimbursement.getuserID()) || 
-        reimbursement.getdescription().length() > 255 || 
-        reimbursement.getamount() < 0 || jwtService.decodeToken(token) != user)  return null;
-
+        reimbursement.setUserID(userOptional.get());
         return reimbursementRepository.save(reimbursement);
     }
 
@@ -53,7 +55,7 @@ public class ReimbursementServiceImpl implements ReimbursementService {
          (status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) &&
           user.getRole().equals("Manager")) {
             Reimbursement reimbursement = reimbursementOptional.get();
-            reimbursement.setstatus(status);
+            reimbursement.setStatus(status);
             return reimbursementRepository.save(reimbursement);
         } 
         return null;
