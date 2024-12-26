@@ -1,4 +1,4 @@
-//import { useEffect } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { registerFormSchema, RegisterSchema } from "../schema/register-schema";
 

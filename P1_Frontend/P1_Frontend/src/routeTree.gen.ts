@@ -53,7 +53,7 @@ const ProtectedDashboardLazyRoute = ProtectedDashboardLazyImport.update({
   path: '/dashboard',
   getParentRoute: () => ProtectedRoute,
 } as any).lazy(() =>
-  import('./routes/_protected/dashboard.lazy').then((d) => d.Route),
+  import('./routes/_protected/dashboard.lazy').then((d) => d.Route)
 )
 
 const AuthAuthRegisterLazyRoute = AuthAuthRegisterLazyImport.update({

@@ -10,6 +10,8 @@ function Index() {
   const { data: auth } = useAuth();
   const router = useRouter();
 
+  console.log(auth);
+
   useEffect(() => {
     if (auth) {
       router.navigate({ to: "/dashboard" });
