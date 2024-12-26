@@ -20,7 +20,7 @@ function RouteComponent() {
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription>
-          Enter your details to login to account.
+          Enter your details to login.
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -30,7 +30,7 @@ function RouteComponent() {
       <CardFooter>
         <p>Don't have an account?</p>
         <Link to={"/auth/register"} className="underline ml-2">
-          Login
+          Register
         </Link>
       </CardFooter>
     </Card>

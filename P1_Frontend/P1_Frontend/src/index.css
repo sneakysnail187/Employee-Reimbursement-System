@@ -71,5 +71,6 @@
   }
   body {
     @apply bg-background text-foreground;
+    @apply bg-gradient-to-r from-teal-400 to-blue-500
   }
 }
