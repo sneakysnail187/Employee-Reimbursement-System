@@ -10,23 +10,23 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { loginSchema, LoginSchema } from "../schema/login-schema";
-import { useLogin } from "../hooks/use-login";
+import { ticketSchema, TicketSchema } from "../schema/ticket-schema";
+import { useTicket } from "../hooks/use-ticket";
 
-export function LoginForm() {
-  const { mutate: login, isPending } = useLogin();
+export function TicketForm() {
+  const { mutate: addTicket, isPending } = useTicket();
 
   // 1. Define your form.
-  const form = useForm<LoginSchema>({
-    resolver: zodResolver(loginSchema),
+  const form = useForm<TicketSchema>({
+    resolver: zodResolver(ticketSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      description: "",
+      amount: 0,
     },
   });
 
-  function onSubmit(values: LoginSchema) {
-    login(values);
+  function onSubmit(values: TicketSchema) {
+    addTicket(values);
   }
 
   return (
@@ -34,11 +34,11 @@ export function LoginForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="username"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="username" placeholder="Username" {...field} />
+                <Input type="text" placeholder="Description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -47,11 +47,11 @@ export function LoginForm() {
 
         <FormField
           control={form.control}
-          name="password"
+          name="amount"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
+                <Input type="number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -59,7 +59,7 @@ export function LoginForm() {
         />
 
         <Button type="submit" disabled={isPending}>
-          Login
+          Submit Ticket
         </Button>
       </form>
     </Form>

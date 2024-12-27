@@ -1,16 +1,24 @@
 import { z } from "zod";
 
 export const registerFormSchema = z.object({
-  email: z
+  firstName: z
     .string({
-      message: "Please enter a valid email address.",
+      message: "Please enter your first name.",
     })
-    .min(1, "Please enter a valid email address.")
-    .max(50)
-    .regex(
-      /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-      "Please enter a valid email address."
-    ),
+    .min(1, "Please enter your first name.")
+    .max(50),
+    lastName: z
+    .string({
+      message: "Please enter your last name.",
+    })
+    .min(1, "Please enter your last name.")
+    .max(50),
+  username: z
+    .string({
+      message: "Please enter a valid username address.",
+    })
+    .min(1, "Please enter a valid username address.")
+    .max(50),
   password: z
     .string({
       message: "Please enter a valid password.",
