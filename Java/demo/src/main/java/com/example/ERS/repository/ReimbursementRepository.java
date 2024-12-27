@@ -9,5 +9,7 @@ import com.example.ERS.entity.Reimbursement;
 @Repository
 public interface ReimbursementRepository extends JpaRepository<Reimbursement, Integer>{
 
-    List<Reimbursement> findByStatus(String string);
+    List<Reimbursement> findAllByStatus(String string);
+    List<Reimbursement> findAllByUserID(Integer id);
+    List<Reimbursement> findAllByUserIDAndStatus(Integer id, String string);
 }

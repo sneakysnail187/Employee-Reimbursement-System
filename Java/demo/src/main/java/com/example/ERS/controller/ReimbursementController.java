@@ -1,5 +1,6 @@
 package com.example.ERS.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ReimbursementController {
     }
     //set status automatically not in postman
 
-    @PatchMapping("/reimbursement/edit")
+    @PatchMapping("/reimbursement")
     public ResponseEntity editTicket(@RequestHeader(name="authorization") String token, @RequestBody EditRequest ticket) {
 
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, ticket));
@@ -44,4 +45,48 @@ public class ReimbursementController {
         }
         return ResponseEntity.status(401).body(null);
     }
+
+    @GetMapping("/users/{id}/reimbursements")//take the status from uri param later
+    public ResponseEntity getUserTickets(@RequestHeader(name="authorization") String token, @PathVariable Integer id) {
+
+        List<Reimbursement> reimbursementsOptional = reimbursementService.getUserReimbursements(token, id);
+
+        if(reimbursementsOptional != null) { //find a better way to do this
+            return ResponseEntity.status(200).body(reimbursementsOptional.toString());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+    @GetMapping("/users/{id}/reimbursements?status=pending")//take the status from uri param later
+    public ResponseEntity getUserPendingTickets(@RequestHeader(name="authorization") String token, @PathVariable Integer id) {
+
+        List<Reimbursement> reimbursementsOptional = reimbursementService.getUserPendingReimbursements(token, id);
+
+        if(reimbursementsOptional != null) { //find a better way to do this
+            return ResponseEntity.status(200).body(reimbursementsOptional.toString());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
+    @GetMapping("/reimbursements")//take the status from uri param later
+    public ResponseEntity getAllTickets(@RequestHeader(name="authorization") String token) {
+
+        List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
+
+        if(reimbursementsOptional != null) { //find a better way to do this
+            return ResponseEntity.status(200).body(reimbursementsOptional.toString());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
+    @GetMapping("/reimbursements?status=pending")//take the status from uri param later
+    public ResponseEntity getAllPendingTickets(@RequestHeader(name="authorization") String token) {
+
+        List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
+
+        if(reimbursementsOptional != null) { //find a better way to do this
+            return ResponseEntity.status(200).body(reimbursementsOptional.toString());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
 }

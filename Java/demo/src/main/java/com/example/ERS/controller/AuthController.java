@@ -17,7 +17,7 @@ import com.example.ERS.service.JwtService;
 
 
 @RestController
-public class UserController {
+public class AuthController {
     
     @Autowired
     @Lazy
@@ -30,25 +30,27 @@ public class UserController {
     @Autowired
     JwtService jwtService;
 
-    @GetMapping("/user")
-    public ResponseEntity getUsers(@RequestHeader(name="authorization") String token) {
+    @PostMapping("/register")
+    public ResponseEntity registerUser(@RequestBody User user) {
 
-        List<User> users = userService.getAllUsers(token);
-
-        if(users != null) {
-            return ResponseEntity.status(200).body(users.toString());
-        }
-        return ResponseEntity.status(401).body(null);
-    }
-
-    @DeleteMapping("/user")
-    public ResponseEntity deleteUser(@RequestHeader(name="authorization") String token, @RequestBody Integer id) {
-
-        Optional<User> userOptional = Optional.ofNullable(userService.deleteUser(id, token));
-
+        Optional<User> userOptional = Optional.ofNullable(userService.registerUser(user));
         if(userOptional.isPresent()) {
             return ResponseEntity.status(200).body(userOptional.get().toString());
         }
+        return ResponseEntity.status(409).body(null);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity loginUser(@RequestBody LoginRequest loginRequest) {
+        Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword())); 
+        //gen token from id
+        if(tokenOptional.isPresent()) {
+            String jwt = tokenOptional.get();
+            return ResponseEntity.status(200).body(jwt);
+        }
         return ResponseEntity.status(401).body(null);
     } //pass in a json not a string
+
+    //reimbursements will use the designated token
+    //on returning use the reimb response  dto
 }

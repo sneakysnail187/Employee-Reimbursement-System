@@ -1,29 +1,85 @@
 package com.example.ERS.service;
 
-import java.util.List;
 import com.example.ERS.entity.User;
 import com.example.ERS.entity.Reimbursement;
+import com.example.ERS.entity.Role;
+import com.example.ERS.repository.UserRepository;
+import com.example.ERS.repository.ReimbursementRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import org.mindrot.jbcrypt.BCrypt;
 
-public interface UserService {
+@Service
+public class UserService {
 
-    User registerUser(User user);
-    String loginUser(String username, String password);
+    @Value("${bcrypt.salt}")
+    private String salt;
 
+    @Autowired
+    UserRepository userRepository;
 
-    //add JWT/session for authentication
+    @Autowired
+    ReimbursementRepository reimbursementRepository;
 
-    //add additional methods in implementation
-    //non logged user has just these 2
-    //logged user adds 
-    //create reimbursement
-    //get my reimbursements
-    //get my pending reimbursements
-    //add another functionality later
+    @Autowired
+    JwtService jwtService;
+    
+    @Transactional
+    public User registerUser(User user) { // add duplicate username exception
+        if(user.getUsername() == "" || user.getPassword().length() < 4 || 
+        userRepository.findUserByUsername(user.getUsername()) != null) {
+            return null;
+        }
+        String hashedPassword = hashPassword(user.getPassword());
+        user.setPassword(hashedPassword);
+        User fin = userRepository.save(user);
+        userRepository.flush();
+        return fin;
+    }
 
-    //manager user is child of logged user (also implements base user interface)
-    //can view all reimbursements
-    //can view all pending reimbursements
-    //can resolve reimbursements
-    //can view all users
-    //can delete users (this should cascade delete their reimbursements)
+    public String loginUser(String username, String password) {
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
+        if(userOptional.isPresent() && hashPassword(password).equals(userOptional.get().getPassword())) {
+            userOptional.get().getPassword();
+            String jwt = jwtService.generateToken(userOptional.get());
+            return jwt;
+        }
+        return null;
+    }
+
+    public List<User> getAllUsers(String token) {
+        Role role = jwtService.getRoleFromToken(token);
+
+        if(role.getRole().equals("Manager")) {
+            return new ArrayList<User>(userRepository.findAll());
+        }
+        return null;
+    }
+
+    public User deleteUser(Integer id, String token) {
+
+        Role role = jwtService.getRoleFromToken(token);
+        Optional<User> userOptional = userRepository.findById(id);
+        
+        if(userOptional.isPresent() && role.getRole().equals("Manager")) {
+            User user = userOptional.get();
+            List<Reimbursement> reimbursements = user.getReimbursements();
+            for(Reimbursement reimbursement : reimbursements) {
+                reimbursementRepository.delete(reimbursement);
+            }
+            userRepository.delete(user);
+            return user;
+        }
+        return null;
+    }
+    
+    private String hashPassword(String password) {
+        return BCrypt.hashpw(password, salt);
+    }
 }
