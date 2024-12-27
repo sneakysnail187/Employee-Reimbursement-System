@@ -20,6 +20,9 @@ import { Route as AuthImport } from './routes/_auth'
 
 const AboutLazyImport = createFileRoute('/about')()
 const IndexLazyImport = createFileRoute('/')()
+const ProtectedEditTicketLazyImport = createFileRoute(
+  '/_protected/editTicket',
+)()
 const ProtectedDashboardLazyImport = createFileRoute('/_protected/dashboard')()
 const ProtectedAddTicketLazyImport = createFileRoute('/_protected/addTicket')()
 const AuthAuthRegisterLazyImport = createFileRoute('/_auth/auth/register')()
@@ -48,6 +51,14 @@ const IndexLazyRoute = IndexLazyImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+
+const ProtectedEditTicketLazyRoute = ProtectedEditTicketLazyImport.update({
+  id: '/editTicket',
+  path: '/editTicket',
+  getParentRoute: () => ProtectedRoute,
+} as any).lazy(() =>
+  import('./routes/_protected/editTicket.lazy').then((d) => d.Route),
+)
 
 const ProtectedDashboardLazyRoute = ProtectedDashboardLazyImport.update({
   id: '/dashboard',
@@ -127,6 +138,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProtectedDashboardLazyImport
       parentRoute: typeof ProtectedImport
     }
+    '/_protected/editTicket': {
+      id: '/_protected/editTicket'
+      path: '/editTicket'
+      fullPath: '/editTicket'
+      preLoaderRoute: typeof ProtectedEditTicketLazyImport
+      parentRoute: typeof ProtectedImport
+    }
     '/_auth/auth/login': {
       id: '/_auth/auth/login'
       path: '/auth/login'
@@ -161,11 +179,13 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 interface ProtectedRouteChildren {
   ProtectedAddTicketLazyRoute: typeof ProtectedAddTicketLazyRoute
   ProtectedDashboardLazyRoute: typeof ProtectedDashboardLazyRoute
+  ProtectedEditTicketLazyRoute: typeof ProtectedEditTicketLazyRoute
 }
 
 const ProtectedRouteChildren: ProtectedRouteChildren = {
   ProtectedAddTicketLazyRoute: ProtectedAddTicketLazyRoute,
   ProtectedDashboardLazyRoute: ProtectedDashboardLazyRoute,
+  ProtectedEditTicketLazyRoute: ProtectedEditTicketLazyRoute,
 }
 
 const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
@@ -178,6 +198,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutLazyRoute
   '/addTicket': typeof ProtectedAddTicketLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
+  '/editTicket': typeof ProtectedEditTicketLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
   '/auth/register': typeof AuthAuthRegisterLazyRoute
 }
@@ -188,6 +209,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutLazyRoute
   '/addTicket': typeof ProtectedAddTicketLazyRoute
   '/dashboard': typeof ProtectedDashboardLazyRoute
+  '/editTicket': typeof ProtectedEditTicketLazyRoute
   '/auth/login': typeof AuthAuthLoginLazyRoute
   '/auth/register': typeof AuthAuthRegisterLazyRoute
 }
@@ -200,6 +222,7 @@ export interface FileRoutesById {
   '/about': typeof AboutLazyRoute
   '/_protected/addTicket': typeof ProtectedAddTicketLazyRoute
   '/_protected/dashboard': typeof ProtectedDashboardLazyRoute
+  '/_protected/editTicket': typeof ProtectedEditTicketLazyRoute
   '/_auth/auth/login': typeof AuthAuthLoginLazyRoute
   '/_auth/auth/register': typeof AuthAuthRegisterLazyRoute
 }
@@ -212,6 +235,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/addTicket'
     | '/dashboard'
+    | '/editTicket'
     | '/auth/login'
     | '/auth/register'
   fileRoutesByTo: FileRoutesByTo
@@ -221,6 +245,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/addTicket'
     | '/dashboard'
+    | '/editTicket'
     | '/auth/login'
     | '/auth/register'
   id:
@@ -231,6 +256,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/_protected/addTicket'
     | '/_protected/dashboard'
+    | '/_protected/editTicket'
     | '/_auth/auth/login'
     | '/_auth/auth/register'
   fileRoutesById: FileRoutesById
@@ -280,7 +306,8 @@ export const routeTree = rootRoute
       "filePath": "_protected.tsx",
       "children": [
         "/_protected/addTicket",
-        "/_protected/dashboard"
+        "/_protected/dashboard",
+        "/_protected/editTicket"
       ]
     },
     "/about": {
@@ -292,6 +319,10 @@ export const routeTree = rootRoute
     },
     "/_protected/dashboard": {
       "filePath": "_protected/dashboard.lazy.tsx",
+      "parent": "/_protected"
+    },
+    "/_protected/editTicket": {
+      "filePath": "_protected/editTicket.lazy.tsx",
       "parent": "/_protected"
     },
     "/_auth/auth/login": {
