@@ -6,8 +6,6 @@ import com.example.ERS.entity.Role;
 import com.example.ERS.repository.UserRepository;
 import com.example.ERS.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -17,9 +15,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 @Service
 public class UserService {
-
-    @Value("${bcrypt.salt}")
-    private String salt;
 
     @Autowired
     UserRepository userRepository;
@@ -38,6 +33,7 @@ public class UserService {
         }
         String hashedPassword = hashPassword(user.getPassword());
         user.setPassword(hashedPassword);
+        user.setRoleId(new Role("Employee"));
         User fin = userRepository.save(user);
         userRepository.flush();
         return fin;
@@ -45,10 +41,10 @@ public class UserService {
 
     public String loginUser(String username, String password) {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
-        if(userOptional.isPresent() && hashPassword(password).equals(userOptional.get().getPassword())) {
+        if(userOptional.isPresent() && BCrypt.checkpw(password, userOptional.get().getPassword())) {
             userOptional.get().getPassword();
             String jwt = jwtService.generateToken(userOptional.get());
-            return jwt;
+            return jwt; //json this or in controller
         }
         return null;
     }
@@ -80,6 +76,6 @@ public class UserService {
     }
     
     private String hashPassword(String password) {
-        return BCrypt.hashpw(password, salt);
+        return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }

@@ -2,6 +2,9 @@ package com.example.ERS.entity;
 
 import java.util.List;
 
+import org.hibernate.annotations.Cascade;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.example.ERS.entity.Role;
 
@@ -31,8 +34,10 @@ public class User {
     private String password;
 
     @ManyToOne()
-    @JoinColumn(name = "role")
-    private Role role;
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JoinColumn(name = "roleId", nullable = false)
+    @JsonBackReference
+    private Role roleId;
 
     @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL)
     @JsonManagedReference
@@ -54,7 +59,7 @@ public class User {
                 ", lastName='" + lastName + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
+                ", role='" + roleId + '\'' +
                 '}';
     }
 

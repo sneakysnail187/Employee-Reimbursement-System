@@ -46,6 +46,7 @@ public class ReimbursementService {
         reimbursement.getAmount() < 0)  return null;
 
         reimbursement.setUserID(userOptional.get());
+        reimbursement.setStatus("Pending");
         return reimbursementRepository.save(reimbursement);
     }
 

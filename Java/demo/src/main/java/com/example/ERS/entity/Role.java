@@ -2,6 +2,8 @@ package com.example.ERS.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -18,9 +20,12 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private int roleId;
+
     private String role;
 
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "roleId", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<User> users;
 
     public Role(String role) {

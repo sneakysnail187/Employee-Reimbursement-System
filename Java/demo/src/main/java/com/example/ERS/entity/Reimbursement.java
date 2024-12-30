@@ -50,10 +50,9 @@ public class Reimbursement {
      * @param status
      * @param userID
      */
-    public Reimbursement(String description, Double amount, String status){
+    public Reimbursement(String description, Double amount){
         this.description = description;
         this.amount = amount;
-        this.status = status;
     }
 
 

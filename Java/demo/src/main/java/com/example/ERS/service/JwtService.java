@@ -38,7 +38,7 @@ public class JwtService {
                 .claim("password", user.getPassword())
                 .claim("firstName", user.getFirstName())
                 .claim("lastName", user.getLastName())
-                .claim("role", user.getRole())
+                .claim("role", user.getRoleId())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // 15 minutes
                 .signWith(getSigningKey())
@@ -65,7 +65,7 @@ public class JwtService {
         user.setPassword(claims.get("password", String.class));
         user.setFirstName(claims.get("firstName", String.class));
         user.setLastName(claims.get("lastName", String.class));
-        user.setRole(claims.get("role", Role.class));
+        user.setRoleId(claims.get("role", Role.class));
 
         return user;
     }
