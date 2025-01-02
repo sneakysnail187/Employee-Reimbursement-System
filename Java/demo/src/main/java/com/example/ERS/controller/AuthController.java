@@ -30,7 +30,7 @@ public class AuthController {
     @Autowired
     JwtService jwtService;
 
-    @PostMapping("/register")
+    @PostMapping("/auth/register")
     public ResponseEntity registerUser(@RequestBody User user) {
 
         Optional<User> userOptional = Optional.ofNullable(userService.registerUser(user));
@@ -40,7 +40,7 @@ public class AuthController {
         return ResponseEntity.status(409).body(null);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/auth/login")
     public ResponseEntity loginUser(@RequestBody LoginRequest loginRequest) {
         Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword())); 
         //gen token from id

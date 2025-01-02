@@ -6,7 +6,7 @@ import { toast } from "sonner";
 export function useRegister() {
   return useMutation({
     mutationFn: async (values: RegisterSchema) => {
-      const resp = await registerInstance.post("/auth/register", values);
+      const resp = await registerInstance.post("/register", values);
       return resp.data;
     },
     onSuccess: () => {

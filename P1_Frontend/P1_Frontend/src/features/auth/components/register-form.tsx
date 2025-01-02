@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { registerFormSchema, RegisterSchema } from "../schema/register-schema";
 
@@ -38,10 +37,12 @@ export function RegisterForm() {
     }
 
     register(values);
+    form.reset();
   }
 
   return (
-    <Form {...form}>
+    <div>
+      <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
       <FormField
           control={form.control}
@@ -49,7 +50,7 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input type="text" placeholder="First Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -61,7 +62,7 @@ export function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input type="text" {...field} />
+                <Input type="text" placeholder="Last Name" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -114,5 +115,7 @@ export function RegisterForm() {
         </Button>
       </form>
     </Form>
+    </div>
+    
   );
 }
