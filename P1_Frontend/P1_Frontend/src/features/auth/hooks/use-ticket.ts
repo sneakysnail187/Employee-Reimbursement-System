@@ -19,7 +19,7 @@ export function useTicket() {
         queryKey: ["auth"],
       });
       toast.success("Submitted ticket successfully.");
-      router.navigate({ to: "/dashboard" });
+      router.navigate({ to: "/" });
     },
     onError: () => {
       toast.error("Failed to submit ticket.");

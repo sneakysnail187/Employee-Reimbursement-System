@@ -30,6 +30,10 @@ export const registerFormSchema = z.object({
       message: "Please confirm your password.",
     })
     .min(1, "Please confirm your password."),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["password"],
 });
+
 
 export type RegisterSchema = z.infer<typeof registerFormSchema>;

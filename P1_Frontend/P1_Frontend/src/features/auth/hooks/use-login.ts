@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { LoginSchema } from "../schema/login-schema";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { loginInstance } from "@/lib/axios-config";
+import { axiosInstance } from "@/lib/axios-config";
 import { useRouter } from "@tanstack/react-router";
 
 export function useLogin() {
@@ -11,7 +11,7 @@ export function useLogin() {
 
   return useMutation({
     mutationFn: async (values: LoginSchema) => {
-      const resp = await loginInstance.post("/auth/login", values);
+      const resp = await axiosInstance.post("/login", values);
       return resp.data;
     },
     onSuccess: () => {
@@ -19,7 +19,7 @@ export function useLogin() {
         queryKey: ["auth"],
       });
       toast.success("Logged in successfully.");
-      router.navigate({ to: "/dashboard" });
+      router.navigate({ to: "/tickets/userTickets" });
     },
     onError: () => {
       toast.error("Failed to login.");

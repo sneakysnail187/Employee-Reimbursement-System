@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Lazy;
 import com.example.ERS.entity.Role;
 import com.example.ERS.service.RoleService;
 
-
 @RestController
 public class RoleController {
 

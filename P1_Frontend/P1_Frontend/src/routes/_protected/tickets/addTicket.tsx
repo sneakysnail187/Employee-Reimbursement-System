@@ -1,4 +1,6 @@
-import { createLazyFileRoute, Link } from '@tanstack/react-router'
+
+
+import { createFileRoute, Link } from '@tanstack/react-router'
 
 import {
   Card,
@@ -10,9 +12,10 @@ import {
 } from '@/components/ui/card'
 import { TicketForm } from '@/features/auth/components/ticket-form'
 
-export const Route = createLazyFileRoute('/_auth/reimb/addTicket')({
+export const Route = createFileRoute('/_protected/tickets/addTicket')({
   component: RouteComponent,
-})
+},
+);
 
 function RouteComponent() {
   return (

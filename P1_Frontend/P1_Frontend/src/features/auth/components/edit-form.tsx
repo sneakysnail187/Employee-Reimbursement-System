@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+/*import { useForm } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,22 +10,21 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { editSchema, EditSchema } from "../schema/edit-schema";
-import { useTicket } from "../hooks/use-edit";
+import { useStatus } from "../hooks/use-status";
 
 export function EditForm() {
-  const { mutate: editTicket, isPending } = useTicket();
+  const { mutate: editTicket, isPending } = useStatus();
 
   // 1. Define your form.
-  const form = useForm<EditSchema>({
-    resolver: zodResolver(editSchema),
+  const form = useForm<StatusSchema>({
+    resolver: zodResolver(statusSchema),
     defaultValues: {
       reimbursementid: 0,
       status: "",
     },
   });
 
-  function onSubmit(values: EditSchema) {
+  function onSubmit(values: StatusSchema) {
     editTicket(values);
   }
 
@@ -65,3 +64,4 @@ export function EditForm() {
     </Form>
   );
 }
+*/
