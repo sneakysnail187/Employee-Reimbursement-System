@@ -2,7 +2,7 @@ import { toast } from "sonner";
 import { TicketSchema } from "../schema/ticket-schema";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { addTicketInstance } from "@/lib/axios-config";
+import { axiosInstance } from "@/lib/axios-config";
 import { useRouter } from "@tanstack/react-router";
 
 export function useTicket() {
@@ -11,7 +11,7 @@ export function useTicket() {
 
   return useMutation({
     mutationFn: async (values: TicketSchema) => {
-      const resp = await addTicketInstance.post("/addTicket", values);
+      const resp = await axiosInstance.post("/reimbursement", values);
       return resp.data;
     },
     onSuccess: () => {

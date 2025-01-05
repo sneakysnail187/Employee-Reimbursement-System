@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as AuthImport } from './routes/_auth'
 import { Route as ProtectedUserAllUsersImport } from './routes/_protected/user/allUsers'
 import { Route as ProtectedTicketsUserTicketsImport } from './routes/_protected/tickets/userTickets'
 import { Route as ProtectedTicketsAllTicketsImport } from './routes/_protected/tickets/allTickets'
@@ -25,6 +26,11 @@ const AuthAuthRegisterLazyImport = createFileRoute('/_auth/auth/register')()
 
 // Create/Update Routes
 
+const AuthRoute = AuthImport.update({
+  id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexLazyRoute = IndexLazyImport.update({
   id: '/',
   path: '/',
@@ -32,9 +38,9 @@ const IndexLazyRoute = IndexLazyImport.update({
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 
 const AuthAuthRegisterLazyRoute = AuthAuthRegisterLazyImport.update({
-  id: '/_auth/auth/register',
+  id: '/auth/register',
   path: '/auth/register',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => AuthRoute,
 } as any).lazy(() =>
   import('./routes/_auth/auth/register.lazy').then((d) => d.Route),
 )
@@ -77,6 +83,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_auth': {
+      id: '/_auth'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
     '/_protected/tickets/addTicket': {
       id: '/_protected/tickets/addTicket'
       path: '/tickets/addTicket'
@@ -110,15 +123,26 @@ declare module '@tanstack/react-router' {
       path: '/auth/register'
       fullPath: '/auth/register'
       preLoaderRoute: typeof AuthAuthRegisterLazyImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof AuthImport
     }
   }
 }
 
 // Create and export the route tree
 
+interface AuthRouteChildren {
+  AuthAuthRegisterLazyRoute: typeof AuthAuthRegisterLazyRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthAuthRegisterLazyRoute: AuthAuthRegisterLazyRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
+  '': typeof AuthRouteWithChildren
   '/tickets/addTicket': typeof ProtectedTicketsAddTicketRoute
   '/tickets/allTickets': typeof ProtectedTicketsAllTicketsRoute
   '/tickets/userTickets': typeof ProtectedTicketsUserTicketsRoute
@@ -128,6 +152,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
+  '': typeof AuthRouteWithChildren
   '/tickets/addTicket': typeof ProtectedTicketsAddTicketRoute
   '/tickets/allTickets': typeof ProtectedTicketsAllTicketsRoute
   '/tickets/userTickets': typeof ProtectedTicketsUserTicketsRoute
@@ -138,6 +163,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
+  '/_auth': typeof AuthRouteWithChildren
   '/_protected/tickets/addTicket': typeof ProtectedTicketsAddTicketRoute
   '/_protected/tickets/allTickets': typeof ProtectedTicketsAllTicketsRoute
   '/_protected/tickets/userTickets': typeof ProtectedTicketsUserTicketsRoute
@@ -149,6 +175,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | ''
     | '/tickets/addTicket'
     | '/tickets/allTickets'
     | '/tickets/userTickets'
@@ -157,6 +184,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | ''
     | '/tickets/addTicket'
     | '/tickets/allTickets'
     | '/tickets/userTickets'
@@ -165,6 +193,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_auth'
     | '/_protected/tickets/addTicket'
     | '/_protected/tickets/allTickets'
     | '/_protected/tickets/userTickets'
@@ -175,20 +204,20 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
+  AuthRoute: typeof AuthRouteWithChildren
   ProtectedTicketsAddTicketRoute: typeof ProtectedTicketsAddTicketRoute
   ProtectedTicketsAllTicketsRoute: typeof ProtectedTicketsAllTicketsRoute
   ProtectedTicketsUserTicketsRoute: typeof ProtectedTicketsUserTicketsRoute
   ProtectedUserAllUsersRoute: typeof ProtectedUserAllUsersRoute
-  AuthAuthRegisterLazyRoute: typeof AuthAuthRegisterLazyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
+  AuthRoute: AuthRouteWithChildren,
   ProtectedTicketsAddTicketRoute: ProtectedTicketsAddTicketRoute,
   ProtectedTicketsAllTicketsRoute: ProtectedTicketsAllTicketsRoute,
   ProtectedTicketsUserTicketsRoute: ProtectedTicketsUserTicketsRoute,
   ProtectedUserAllUsersRoute: ProtectedUserAllUsersRoute,
-  AuthAuthRegisterLazyRoute: AuthAuthRegisterLazyRoute,
 }
 
 export const routeTree = rootRoute
@@ -202,15 +231,21 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/_auth",
         "/_protected/tickets/addTicket",
         "/_protected/tickets/allTickets",
         "/_protected/tickets/userTickets",
-        "/_protected/user/allUsers",
-        "/_auth/auth/register"
+        "/_protected/user/allUsers"
       ]
     },
     "/": {
       "filePath": "index.lazy.tsx"
+    },
+    "/_auth": {
+      "filePath": "_auth.tsx",
+      "children": [
+        "/_auth/auth/register"
+      ]
     },
     "/_protected/tickets/addTicket": {
       "filePath": "_protected/tickets/addTicket.tsx"
@@ -225,7 +260,8 @@ export const routeTree = rootRoute
       "filePath": "_protected/user/allUsers.tsx"
     },
     "/_auth/auth/register": {
-      "filePath": "_auth/auth/register.lazy.tsx"
+      "filePath": "_auth/auth/register.lazy.tsx",
+      "parent": "/_auth"
     }
   }
 }
