@@ -39,7 +39,7 @@ public class User {
     @JsonBackReference
     private Role roleId;
 
-    @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Reimbursement> reimbursements;
 
@@ -49,18 +49,4 @@ public class User {
         this.username = username;
         this.password = password;
     }
-
-   
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", role='" + roleId + '\'' +
-                '}';
-    }
-
 }

@@ -1,5 +1,6 @@
 package com.example.ERS.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,6 @@ import com.example.ERS.service.JwtService;
 public class ReimbursementController {
 
     @Autowired
-    @Lazy
     private ReimbursementService reimbursementService;
 
     @Autowired
@@ -51,15 +51,14 @@ public class ReimbursementController {
 
     @GetMapping("/users/reimbursements")//take the status from uri param later
     public ResponseEntity getUserTickets(@RequestHeader(name="Authorization") String token) {
+        List<Reimbursement> reimbursements = reimbursementService.getUserReimbursements(token);
 
-        int id = jwtService.getIdFromToken(token);
-        List<Reimbursement> reimbursementsOptional = reimbursementService.getUserReimbursements(token, id);
-
-        if(reimbursementsOptional != null) { //find a better way to do this
-            return ResponseEntity.status(200).body(reimbursementsOptional.toString());
+        if (!reimbursements.isEmpty()) { 
+            return ResponseEntity.status(200).body(reimbursements);
         }
         return ResponseEntity.status(401).body(null);
     }
+
     @GetMapping("/users/reimbursements?status=pending")//take the status from uri param later
     public ResponseEntity getUserPendingTickets(@RequestHeader(name="Authorization") String token) {
 

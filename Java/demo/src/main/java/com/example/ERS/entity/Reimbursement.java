@@ -15,12 +15,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name="reimbursement")
 public class Reimbursement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private Integer reimbursementId;
     /**
      * A description for this Reimbursement (must be unique and not blank)
@@ -55,19 +56,4 @@ public class Reimbursement {
         this.amount = amount;
     }
 
-
-    /**
-     * Overriding the default toString() method allows for easy debugging.
-     * @return a String representation of this class.
-     */
-    @Override
-    public String toString() {
-        return "Reimbursement{" +
-                "reimbursementId=" + reimbursementId +
-                ", description='" + description + '\'' +
-                ", amount='" + amount + '\'' +
-                ", status='" + status + '\'' +
-                ", userID='" + userID + '\'' +
-                '}';
-    }
 }

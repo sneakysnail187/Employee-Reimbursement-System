@@ -22,10 +22,6 @@ public class AuthController {
     @Autowired
     @Lazy
     private UserService userService;
-    
-    @Autowired
-    @Lazy
-    private ReimbursementService reimbursementService;
 
     @Autowired
     @Lazy

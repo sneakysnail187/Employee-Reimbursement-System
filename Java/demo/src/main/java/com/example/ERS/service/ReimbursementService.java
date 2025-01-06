@@ -5,6 +5,10 @@ import com.example.ERS.entity.Role;
 import com.example.ERS.dto.Request.EditRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.repository.UserRepository;
+
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import com.example.ERS.repository.ReimbursementRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +18,19 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 
 @Service
 public class ReimbursementService {
 
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Autowired
-    @Lazy
     ReimbursementRepository reimbursementRepository;
 
     @Autowired
-    @Lazy
     UserRepository userRepository;
 
     @Autowired
@@ -69,10 +74,14 @@ public class ReimbursementService {
         return null;
     }
 
-    public List<Reimbursement> getUserReimbursements(String token, Integer id) {
-        return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserID(jwtService.decodeToken(token)));
+    public List<Reimbursement> getUserReimbursements(String token) {
+        CopyOnWriteArrayList<Reimbursement> reimbursements = new CopyOnWriteArrayList<Reimbursement>(reimbursementRepository.findAllByUserID(jwtService.decodeToken(token)));
+        reimbursements.forEach(entityManager::detach);
+        return reimbursements;
+
     }
 
+    @Transactional
     public List<Reimbursement> getUserPendingReimbursements(String token, Integer id) {
         return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserIDAndStatus(id, "Pending"));
     }
