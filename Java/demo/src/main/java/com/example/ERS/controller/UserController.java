@@ -30,7 +30,7 @@ public class UserController {
     JwtService jwtService;
 
     @GetMapping("/user")
-    public ResponseEntity getUsers(@RequestHeader(name="authorization") String token) {
+    public ResponseEntity getUsers(@RequestHeader(name="Authorization") String token) {
 
         List<User> users = userService.getAllUsers(token);
 
@@ -40,8 +40,8 @@ public class UserController {
         return ResponseEntity.status(401).body(null);
     }
 
-    @DeleteMapping("/user")
-    public ResponseEntity deleteUser(@RequestHeader(name="authorization") String token, @RequestBody Integer id) {
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity deleteUser(@RequestHeader(name="Authorization") String token, @PathVariable Integer id) {
 
         Optional<User> userOptional = Optional.ofNullable(userService.deleteUser(id, token));
 

@@ -4,8 +4,10 @@ import com.example.ERS.entity.User;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.entity.Role;
 import com.example.ERS.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.example.ERS.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -17,12 +19,15 @@ import org.mindrot.jbcrypt.BCrypt;
 public class UserService {
 
     @Autowired
+    @Lazy
     UserRepository userRepository;
 
     @Autowired
+    @Lazy
     ReimbursementRepository reimbursementRepository;
 
     @Autowired
+    @Lazy
     JwtService jwtService;
     
     @Transactional
@@ -39,11 +44,11 @@ public class UserService {
         return fin;
     }
 
-    public String loginUser(String username, String password) {
+    public String loginUser(String username, String password) throws JsonProcessingException {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
         if(userOptional.isPresent() && BCrypt.checkpw(password, userOptional.get().getPassword())) {
-            userOptional.get().getPassword();
-            String jwt = jwtService.generateToken(userOptional.get());
+            User user = userOptional.get();
+            String jwt = jwtService.generateToken(user); //this call doesnt work
             return jwt; //json this or in controller
         }
         return null;

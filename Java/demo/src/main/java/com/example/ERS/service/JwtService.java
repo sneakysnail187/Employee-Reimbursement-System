@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.example.ERS.entity.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.ERS.entity.Role;
 
 import java.io.Console;
@@ -30,15 +32,18 @@ public class JwtService {
      *
      * @param user the user for whom the token is to be generated
      * @return a JWT token as a String
+     * @throws JsonProcessingException 
      */
-    public String generateToken(User user) {
+    public String generateToken(User user) throws JsonProcessingException { 
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("id", user.getUserId());
+        claims.put("username", user.getUsername());
+        claims.put("password", user.getPassword());
+        claims.put("firstName", user.getFirstName());
+        claims.put("lastName", user.getLastName());
+        claims.put("role", user.getRoleId().getRole()); 
         return Jwts.builder()
-                .claim("id", user.getUserId())
-                .claim("username", user.getUsername())
-                .claim("password", user.getPassword())
-                .claim("firstName", user.getFirstName())
-                .claim("lastName", user.getLastName())
-                .claim("role", user.getRoleId())
+                .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // 15 minutes
                 .signWith(getSigningKey())
@@ -65,7 +70,7 @@ public class JwtService {
         user.setPassword(claims.get("password", String.class));
         user.setFirstName(claims.get("firstName", String.class));
         user.setLastName(claims.get("lastName", String.class));
-        user.setRoleId(claims.get("role", Role.class));
+        user.setRoleId(new Role(claims.get("role", String.class)));
 
         return user;
     }

@@ -12,12 +12,12 @@ export function useStatus() {
 
     return useMutation({
         mutationFn: async ({reimbId, status}: StatusSchema) => {
-            const resp = await axiosInstance.patch("/reimbursement/status",{reimbId, status,});
+            const resp = await axiosInstance.patch("/reimbursement/status",{reimbId, status}, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["auth"], //check this later
+                queryKey: ["all-ticket-list"], //check this later
             });
             toast.success("Status updated successfully.");
         },

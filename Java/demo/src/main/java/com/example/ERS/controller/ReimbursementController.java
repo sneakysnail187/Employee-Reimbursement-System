@@ -11,6 +11,9 @@ import org.springframework.context.annotation.Lazy;
 import com.example.ERS.dto.Request.EditRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.service.ReimbursementService;
+
+import jakarta.transaction.Transactional;
+
 import com.example.ERS.service.JwtService;
 
 @RestController
@@ -22,32 +25,34 @@ public class ReimbursementController {
 
     @Autowired
     JwtService jwtService;
-
+    @Transactional
     @PostMapping("/reimbursement")
-    public ResponseEntity createTicket(@RequestHeader(name="authorization") String token, @RequestBody Reimbursement ticket) {
+    public ResponseEntity createTicket(@RequestHeader(name="Authorization") String token, @RequestBody Reimbursement ticket) {
 
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.createReimbursement(token, ticket));
 
         if(reimbursementOptional.isPresent()) { 
-            return ResponseEntity.status(200).body(reimbursementOptional.toString());
+            return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
         return ResponseEntity.status(401).body(null);
     }
     //set status automatically not in postman
 
+    @Transactional
     @PatchMapping("/reimbursement")
-    public ResponseEntity editTicket(@RequestHeader(name="authorization") String token, @RequestBody EditRequest ticket) {
+    public ResponseEntity editTicket(@RequestHeader(name="Authorization") String token, @RequestBody EditRequest ticket) {
 
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, ticket));
         if(reimbursementOptional.isPresent()) { 
-            return ResponseEntity.status(200).body(reimbursementOptional.get().toString());
+            return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
         return ResponseEntity.status(401).body(null);
     }
 
-    @GetMapping("/users/{id}/reimbursements")//take the status from uri param later
-    public ResponseEntity getUserTickets(@RequestHeader(name="authorization") String token, @PathVariable Integer id) {
+    @GetMapping("/users/reimbursements")//take the status from uri param later
+    public ResponseEntity getUserTickets(@RequestHeader(name="Authorization") String token) {
 
+        int id = jwtService.getIdFromToken(token);
         List<Reimbursement> reimbursementsOptional = reimbursementService.getUserReimbursements(token, id);
 
         if(reimbursementsOptional != null) { //find a better way to do this
@@ -55,9 +60,10 @@ public class ReimbursementController {
         }
         return ResponseEntity.status(401).body(null);
     }
-    @GetMapping("/users/{id}/reimbursements?status=pending")//take the status from uri param later
-    public ResponseEntity getUserPendingTickets(@RequestHeader(name="authorization") String token, @PathVariable Integer id) {
+    @GetMapping("/users/reimbursements?status=pending")//take the status from uri param later
+    public ResponseEntity getUserPendingTickets(@RequestHeader(name="Authorization") String token) {
 
+        int id = jwtService.getIdFromToken(token);
         List<Reimbursement> reimbursementsOptional = reimbursementService.getUserPendingReimbursements(token, id);
 
         if(reimbursementsOptional != null) { //find a better way to do this
@@ -66,8 +72,8 @@ public class ReimbursementController {
         return ResponseEntity.status(401).body(null);
     }
 
-    @GetMapping("/reimbursements")//take the status from uri param later
-    public ResponseEntity getAllTickets(@RequestHeader(name="authorization") String token) {
+    @GetMapping("/reimbursements/all")//take the status from uri param later
+    public ResponseEntity getAllTickets(@RequestHeader(name="Authorization") String token) {
 
         List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
 
@@ -78,7 +84,7 @@ public class ReimbursementController {
     }
 
     @GetMapping("/reimbursements?status=pending")//take the status from uri param later
-    public ResponseEntity getAllPendingTickets(@RequestHeader(name="authorization") String token) {
+    public ResponseEntity getAllPendingTickets(@RequestHeader(name="Authorization") String token) {
 
         List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
 

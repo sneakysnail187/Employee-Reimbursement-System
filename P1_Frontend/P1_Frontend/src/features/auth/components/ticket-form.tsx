@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -10,10 +9,22 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { ticketSchema, TicketSchema } from "../schema/ticket-schema";
 import { useTicket } from "../hooks/use-ticket";
 
-export function TicketForm() {
+
+interface TicketFormProps {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}
+
+export function TicketForm({ open, setOpen }: TicketFormProps) {
   const { mutate: addTicket, isPending } = useTicket();
 
   // 1. Define your form.
@@ -26,42 +37,61 @@ export function TicketForm() {
   });
 
   function onSubmit(values: TicketSchema) {
-    addTicket(values);
+    addTicket(values, {
+      onSuccess: () => {
+        form.reset();
+        setOpen(false);
+      },
+    });
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="text" placeholder="Description" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+    <Dialog open={open} onOpenChange={() => {
+      form.reset();
+      setOpen(false)}}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Create Ticket</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="text" placeholder="Description" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field: { onChange, ...field } }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input 
+                        type="number" 
+                        {...field}
+                        onChange={(e) => onChange(e.target.valueAsNumber)}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-        <Button type="submit" disabled={isPending}>
-          Submit Ticket
-        </Button>
-      </form>
-    </Form>
+              <Button type="submit">
+                Submit Ticket
+              </Button>
+            </form>
+          </Form>
+        </ DialogContent>
+    </Dialog>
   );
 }
+

@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
 import com.example.ERS.entity.Role;
 import com.example.ERS.repository.RoleRepository;
@@ -14,6 +15,7 @@ import com.example.ERS.repository.RoleRepository;
 public class RoleService {
     
     @Autowired
+    @Lazy
     RoleRepository roleRepository;
 
 

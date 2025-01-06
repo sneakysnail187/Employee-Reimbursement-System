@@ -13,6 +13,7 @@ import com.example.ERS.dto.Request.LoginRequest;
 import com.example.ERS.entity.User;
 import com.example.ERS.service.ReimbursementService;
 import com.example.ERS.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.example.ERS.service.JwtService;
 
 @RestController
@@ -27,6 +28,7 @@ public class AuthController {
     private ReimbursementService reimbursementService;
 
     @Autowired
+    @Lazy
     JwtService jwtService;
 
     @PostMapping("/auth/register")
@@ -40,7 +42,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth/login")
-    public ResponseEntity loginUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity loginUser(@RequestBody LoginRequest loginRequest) throws JsonProcessingException {
         Optional<String> tokenOptional = Optional.ofNullable(userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword())); 
         //gen token from id
         if(tokenOptional.isPresent()) {
@@ -49,7 +51,4 @@ public class AuthController {
         }
         return ResponseEntity.status(401).body(null);
     } //pass in a json not a string
-
-    //reimbursements will use the designated token
-    //on returning use the reimb response  dto
 }

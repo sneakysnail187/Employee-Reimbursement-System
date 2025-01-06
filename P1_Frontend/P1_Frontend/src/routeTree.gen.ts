@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as ProtectedImport } from './routes/_protected'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as ProtectedUserAllUsersImport } from './routes/_protected/user/allUsers'
 import { Route as ProtectedTicketsUserTicketsImport } from './routes/_protected/tickets/userTickets'
@@ -25,6 +26,11 @@ const IndexLazyImport = createFileRoute('/')()
 const AuthAuthRegisterLazyImport = createFileRoute('/_auth/auth/register')()
 
 // Create/Update Routes
+
+const ProtectedRoute = ProtectedImport.update({
+  id: '/_protected',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const AuthRoute = AuthImport.update({
   id: '/_auth',
@@ -46,30 +52,30 @@ const AuthAuthRegisterLazyRoute = AuthAuthRegisterLazyImport.update({
 )
 
 const ProtectedUserAllUsersRoute = ProtectedUserAllUsersImport.update({
-  id: '/_protected/user/allUsers',
+  id: '/user/allUsers',
   path: '/user/allUsers',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => ProtectedRoute,
 } as any)
 
 const ProtectedTicketsUserTicketsRoute =
   ProtectedTicketsUserTicketsImport.update({
-    id: '/_protected/tickets/userTickets',
+    id: '/tickets/userTickets',
     path: '/tickets/userTickets',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => ProtectedRoute,
   } as any)
 
 const ProtectedTicketsAllTicketsRoute = ProtectedTicketsAllTicketsImport.update(
   {
-    id: '/_protected/tickets/allTickets',
+    id: '/tickets/allTickets',
     path: '/tickets/allTickets',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => ProtectedRoute,
   } as any,
 )
 
 const ProtectedTicketsAddTicketRoute = ProtectedTicketsAddTicketImport.update({
-  id: '/_protected/tickets/addTicket',
+  id: '/tickets/addTicket',
   path: '/tickets/addTicket',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => ProtectedRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -90,33 +96,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthImport
       parentRoute: typeof rootRoute
     }
+    '/_protected': {
+      id: '/_protected'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof ProtectedImport
+      parentRoute: typeof rootRoute
+    }
     '/_protected/tickets/addTicket': {
       id: '/_protected/tickets/addTicket'
       path: '/tickets/addTicket'
       fullPath: '/tickets/addTicket'
       preLoaderRoute: typeof ProtectedTicketsAddTicketImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedImport
     }
     '/_protected/tickets/allTickets': {
       id: '/_protected/tickets/allTickets'
       path: '/tickets/allTickets'
       fullPath: '/tickets/allTickets'
       preLoaderRoute: typeof ProtectedTicketsAllTicketsImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedImport
     }
     '/_protected/tickets/userTickets': {
       id: '/_protected/tickets/userTickets'
       path: '/tickets/userTickets'
       fullPath: '/tickets/userTickets'
       preLoaderRoute: typeof ProtectedTicketsUserTicketsImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedImport
     }
     '/_protected/user/allUsers': {
       id: '/_protected/user/allUsers'
       path: '/user/allUsers'
       fullPath: '/user/allUsers'
       preLoaderRoute: typeof ProtectedUserAllUsersImport
-      parentRoute: typeof rootRoute
+      parentRoute: typeof ProtectedImport
     }
     '/_auth/auth/register': {
       id: '/_auth/auth/register'
@@ -140,9 +153,27 @@ const AuthRouteChildren: AuthRouteChildren = {
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface ProtectedRouteChildren {
+  ProtectedTicketsAddTicketRoute: typeof ProtectedTicketsAddTicketRoute
+  ProtectedTicketsAllTicketsRoute: typeof ProtectedTicketsAllTicketsRoute
+  ProtectedTicketsUserTicketsRoute: typeof ProtectedTicketsUserTicketsRoute
+  ProtectedUserAllUsersRoute: typeof ProtectedUserAllUsersRoute
+}
+
+const ProtectedRouteChildren: ProtectedRouteChildren = {
+  ProtectedTicketsAddTicketRoute: ProtectedTicketsAddTicketRoute,
+  ProtectedTicketsAllTicketsRoute: ProtectedTicketsAllTicketsRoute,
+  ProtectedTicketsUserTicketsRoute: ProtectedTicketsUserTicketsRoute,
+  ProtectedUserAllUsersRoute: ProtectedUserAllUsersRoute,
+}
+
+const ProtectedRouteWithChildren = ProtectedRoute._addFileChildren(
+  ProtectedRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
-  '': typeof AuthRouteWithChildren
+  '': typeof ProtectedRouteWithChildren
   '/tickets/addTicket': typeof ProtectedTicketsAddTicketRoute
   '/tickets/allTickets': typeof ProtectedTicketsAllTicketsRoute
   '/tickets/userTickets': typeof ProtectedTicketsUserTicketsRoute
@@ -152,7 +183,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
-  '': typeof AuthRouteWithChildren
+  '': typeof ProtectedRouteWithChildren
   '/tickets/addTicket': typeof ProtectedTicketsAddTicketRoute
   '/tickets/allTickets': typeof ProtectedTicketsAllTicketsRoute
   '/tickets/userTickets': typeof ProtectedTicketsUserTicketsRoute
@@ -164,6 +195,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexLazyRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/_protected': typeof ProtectedRouteWithChildren
   '/_protected/tickets/addTicket': typeof ProtectedTicketsAddTicketRoute
   '/_protected/tickets/allTickets': typeof ProtectedTicketsAllTicketsRoute
   '/_protected/tickets/userTickets': typeof ProtectedTicketsUserTicketsRoute
@@ -194,6 +226,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/_protected'
     | '/_protected/tickets/addTicket'
     | '/_protected/tickets/allTickets'
     | '/_protected/tickets/userTickets'
@@ -205,19 +238,13 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   AuthRoute: typeof AuthRouteWithChildren
-  ProtectedTicketsAddTicketRoute: typeof ProtectedTicketsAddTicketRoute
-  ProtectedTicketsAllTicketsRoute: typeof ProtectedTicketsAllTicketsRoute
-  ProtectedTicketsUserTicketsRoute: typeof ProtectedTicketsUserTicketsRoute
-  ProtectedUserAllUsersRoute: typeof ProtectedUserAllUsersRoute
+  ProtectedRoute: typeof ProtectedRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   AuthRoute: AuthRouteWithChildren,
-  ProtectedTicketsAddTicketRoute: ProtectedTicketsAddTicketRoute,
-  ProtectedTicketsAllTicketsRoute: ProtectedTicketsAllTicketsRoute,
-  ProtectedTicketsUserTicketsRoute: ProtectedTicketsUserTicketsRoute,
-  ProtectedUserAllUsersRoute: ProtectedUserAllUsersRoute,
+  ProtectedRoute: ProtectedRouteWithChildren,
 }
 
 export const routeTree = rootRoute
@@ -232,10 +259,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
-        "/_protected/tickets/addTicket",
-        "/_protected/tickets/allTickets",
-        "/_protected/tickets/userTickets",
-        "/_protected/user/allUsers"
+        "/_protected"
       ]
     },
     "/": {
@@ -247,17 +271,30 @@ export const routeTree = rootRoute
         "/_auth/auth/register"
       ]
     },
+    "/_protected": {
+      "filePath": "_protected.tsx",
+      "children": [
+        "/_protected/tickets/addTicket",
+        "/_protected/tickets/allTickets",
+        "/_protected/tickets/userTickets",
+        "/_protected/user/allUsers"
+      ]
+    },
     "/_protected/tickets/addTicket": {
-      "filePath": "_protected/tickets/addTicket.tsx"
+      "filePath": "_protected/tickets/addTicket.tsx",
+      "parent": "/_protected"
     },
     "/_protected/tickets/allTickets": {
-      "filePath": "_protected/tickets/allTickets.tsx"
+      "filePath": "_protected/tickets/allTickets.tsx",
+      "parent": "/_protected"
     },
     "/_protected/tickets/userTickets": {
-      "filePath": "_protected/tickets/userTickets.tsx"
+      "filePath": "_protected/tickets/userTickets.tsx",
+      "parent": "/_protected"
     },
     "/_protected/user/allUsers": {
-      "filePath": "_protected/user/allUsers.tsx"
+      "filePath": "_protected/user/allUsers.tsx",
+      "parent": "/_protected"
     },
     "/_auth/auth/register": {
       "filePath": "_auth/auth/register.lazy.tsx",

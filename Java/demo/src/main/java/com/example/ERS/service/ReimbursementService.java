@@ -47,7 +47,10 @@ public class ReimbursementService {
 
         reimbursement.setUserID(userOptional.get());
         reimbursement.setStatus("Pending");
-        return reimbursementRepository.save(reimbursement);
+
+        Reimbursement reimbursementSaved = reimbursementRepository.save(reimbursement);
+        reimbursementRepository.flush();
+        return reimbursementSaved;
     }
 
     @Transactional
@@ -67,13 +70,11 @@ public class ReimbursementService {
     }
 
     public List<Reimbursement> getUserReimbursements(String token, Integer id) {
-        if(jwtService.decodeToken(token).getUserId() == id) return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserID(id));
-        return null;
+        return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserID(jwtService.decodeToken(token)));
     }
 
     public List<Reimbursement> getUserPendingReimbursements(String token, Integer id) {
-        if(jwtService.decodeToken(token).getUserId() == id) return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserIDAndStatus(id, "Pending"));
-        return null;
+        return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserIDAndStatus(id, "Pending"));
     }
 
     public List<Reimbursement> getAllReimbursements(String token) {
