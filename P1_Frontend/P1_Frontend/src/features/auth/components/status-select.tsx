@@ -1,15 +1,15 @@
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
-interface RoleSelectProps {
+interface StatusSelectProps {
     initialValue: string,
     onChange?: (value: string) => void
 }
 
-export function RoleSelect({initialValue, onChange}: RoleSelectProps) {
+export function StatusSelect({initialValue, onChange}: StatusSelectProps) {
     return (
         <Select value={initialValue} onValueChange={onChange}>
-            <SelectTrigger className="w-[180px]" aria-label = "Select a role">
-                <SelectValue placeholder="Select a role" /> 
+            <SelectTrigger className="w-[180px]" aria-label = "Select a Status">
+                <SelectValue placeholder="Select a Status" /> 
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="Employee">Employee</SelectItem>
@@ -19,4 +19,4 @@ export function RoleSelect({initialValue, onChange}: RoleSelectProps) {
     );
 }
 
-export default RoleSelect;
+export default StatusSelect;

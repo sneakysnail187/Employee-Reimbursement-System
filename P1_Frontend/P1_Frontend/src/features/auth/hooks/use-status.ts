@@ -17,7 +17,7 @@ export function useStatus() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["all-ticket-list"], //check this later
+                queryKey: ["ticket-status"], //check this later
             });
             toast.success("Status updated successfully.");
         },

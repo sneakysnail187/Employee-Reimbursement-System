@@ -3,13 +3,17 @@ package com.example.ERS.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
 
-import com.example.ERS.dto.Request.EditRequest;
+import com.example.ERS.dto.Request.AmountEditRequest;
+import com.example.ERS.dto.Request.DescriptionEditRequest;
+import com.example.ERS.dto.Request.StatusEditRequest;
+import com.example.ERS.dto.response.ReimbursementResponse;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.service.ReimbursementService;
 
@@ -39,10 +43,32 @@ public class ReimbursementController {
     //set status automatically not in postman
 
     @Transactional
-    @PatchMapping("/reimbursement")
-    public ResponseEntity editTicket(@RequestHeader(name="Authorization") String token, @RequestBody EditRequest ticket) {
+    @PatchMapping("/reimbursement/status")
+    public ResponseEntity editTicketStatus(@RequestHeader(name="Authorization") String token, @RequestBody StatusEditRequest ticket) {
 
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, ticket));
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementStatus(token, ticket));
+        if(reimbursementOptional.isPresent()) { 
+            return ResponseEntity.status(200).body(reimbursementOptional.get());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
+    @Transactional
+    @PatchMapping("/reimbursement/amount")
+    public ResponseEntity editTicketAmount(@RequestHeader(name="Authorization") String token, @RequestBody AmountEditRequest ticket) {
+
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementAmount(token, ticket));
+        if(reimbursementOptional.isPresent()) { 
+            return ResponseEntity.status(200).body(reimbursementOptional.get());
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
+    @Transactional
+    @PatchMapping("/reimbursement/description")
+    public ResponseEntity editTicketDescription(@RequestHeader(name="Authorization") String token, @RequestBody DescriptionEditRequest ticket) {
+
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementDescription  (token, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }

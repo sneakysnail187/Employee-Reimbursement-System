@@ -15,7 +15,7 @@ export function useAuth(): UseQueryResult<User> {
     queryKey: ["auth"],
     queryFn: async () => {
       try {
-        const resp = await axiosInstance.get("/users/reimbursements");
+        const resp = await axiosInstance.get("/users/reimbursements");//check where to go instead
         return resp.data;
       } catch (e) {
         console.error(e);

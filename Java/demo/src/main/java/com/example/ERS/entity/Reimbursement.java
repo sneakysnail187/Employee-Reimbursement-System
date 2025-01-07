@@ -48,8 +48,6 @@ public class Reimbursement {
      * ReimbursementId is needed.
      * @param description
      * @param amount
-     * @param status
-     * @param userID
      */
     public Reimbursement(String description, Double amount){
         this.description = description;

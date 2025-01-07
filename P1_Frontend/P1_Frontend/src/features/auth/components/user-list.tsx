@@ -13,8 +13,12 @@ import {
 
 export function UserList() {
     const { data: users } = useUserList();
-    const { mutateAsync: deleteFn } = useDelete();
+    const deleteFn  = useDelete();
     const { mutateAsync: roleFn } = useRole();
+
+    const deleteUser = async (id: number) => {
+        deleteFn.mutate(id);
+    }
 
     return (
         <Table>
@@ -23,6 +27,7 @@ export function UserList() {
                     <TableHead className="w-[100px]">ID</TableHead>
                     <TableHead className="w-[100px]">Username</TableHead>
                     <TableHead className="w-[100px]">Role</TableHead>
+                    <TableHead className="text-right w-[100px]">Full Name</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -30,11 +35,13 @@ export function UserList() {
                     <TableRow key={user.userId}>
                         <TableCell className="font-medium">{user.userId}</TableCell>
                         <TableCell className="font-medium">{user.username}</TableCell>
-                        <TableCell className="font-medium">{user.roleName}
+                        <TableCell className="font-medium">
                             <RoleSelect initialValue={user.roleName} onChange={(value) => roleFn({ userId: user.userId })} />
                         </TableCell>
+                        <TableCell className="font-medium">{user.fullName}</TableCell>
                         <TableCell className="flex gap-3">
-                            <button onClick={() => deleteFn(user.userId)}>Delete</button>
+                            <button onClick={() => deleteUser(user.userId)}
+                             disabled ={deleteFn.status === "pending"}>Delete</button>
                         </TableCell>
                     </TableRow>
                 ))}

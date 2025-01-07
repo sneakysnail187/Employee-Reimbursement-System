@@ -12,8 +12,8 @@ export function useLogin() {
   return useMutation({
     mutationFn: async (values: LoginSchema) => {
       const resp = await axiosInstance.post("/auth/login", values);
+      console.log(resp.data);
       localStorage.setItem("token", resp.data);
-      console.log(localStorage.getItem("token"));
       return resp.data;
     },
     onSuccess: () => {

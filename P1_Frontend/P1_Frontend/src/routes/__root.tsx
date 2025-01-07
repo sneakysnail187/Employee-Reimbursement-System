@@ -6,7 +6,7 @@ export const Route = createRootRoute({
   component: () => (
     <QueryProvider>
       <div>
-        <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
+        <div style={{backgroundColor: "white", display: "flex", justifyContent: "center", alignItems: "center"}}>
           <h1 className="text-2xl font-bold mb-4">Employee Reimbursement System</h1>
         </div>
         <Outlet />

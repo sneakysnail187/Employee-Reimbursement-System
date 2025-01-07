@@ -25,7 +25,9 @@ function RouteComponent() {
         <CardDescription>Enter ticket details.</CardDescription>
       </CardHeader>
       <CardContent>
-        <TicketForm />
+        <TicketForm open={false} setOpen={function (value: boolean): void {
+          throw new Error('Function not implemented.');
+        } } />
       </CardContent>
 
       <CardFooter>

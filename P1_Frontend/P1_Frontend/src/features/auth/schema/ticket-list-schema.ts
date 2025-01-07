@@ -11,8 +11,6 @@ export const ticketListSchema = z.array(z.object({
         roleName: z.string(),
         fullName: z.string()
     })
-
-
 }))
 
 export type TicketListSchema = z.infer<typeof ticketListSchema>;

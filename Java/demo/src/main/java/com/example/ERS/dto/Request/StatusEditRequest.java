@@ -1,6 +1,6 @@
 package com.example.ERS.dto.Request;
 
-public class EditRequest {
+public class StatusEditRequest {
     
 
     private Integer reimbursementid;

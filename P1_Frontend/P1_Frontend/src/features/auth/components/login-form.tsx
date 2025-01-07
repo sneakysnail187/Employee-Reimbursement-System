@@ -15,6 +15,8 @@ import { useLogin } from "../hooks/use-login";
 export function LoginForm() {
   const { mutate: login, isPending } = useLogin();
 
+  //console.log("Tickets received: ",  data);
+
   // 1. Define your form.
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),

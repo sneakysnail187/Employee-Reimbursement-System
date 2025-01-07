@@ -2,7 +2,9 @@ package com.example.ERS.service;
 
 import com.example.ERS.entity.User;
 import com.example.ERS.entity.Role;
-import com.example.ERS.dto.Request.EditRequest;
+import com.example.ERS.dto.Request.AmountEditRequest;
+import com.example.ERS.dto.Request.DescriptionEditRequest;
+import com.example.ERS.dto.Request.StatusEditRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.repository.UserRepository;
 
@@ -59,7 +61,7 @@ public class ReimbursementService {
     }
 
     @Transactional
-    public Reimbursement updateReimbursement(String token, EditRequest reimbursement) {
+    public Reimbursement updateReimbursementStatus(String token, StatusEditRequest reimbursement) {
         Role role = jwtService.getRoleFromToken(token);
         String status = reimbursement.getStatus();
 
@@ -69,6 +71,30 @@ public class ReimbursementService {
           role.getRole().equals("Manager")) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
             reimbursementEdit.setStatus(status);
+            return reimbursementRepository.save(reimbursementEdit);
+        } 
+        return null;
+    }
+
+    @Transactional
+    public Reimbursement updateReimbursementAmount(String token, AmountEditRequest reimbursement) {
+
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
+        if(reimbursementOptional.isPresent()) {
+            Reimbursement reimbursementEdit = reimbursementOptional.get();
+            reimbursementEdit.setAmount(null);//get this
+            return reimbursementRepository.save(reimbursementEdit);
+        } 
+        return null;
+    }
+
+    @Transactional
+    public Reimbursement updateReimbursementDescription(String token, DescriptionEditRequest reimbursement) {
+
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
+        if(reimbursementOptional.isPresent()) {
+            Reimbursement reimbursementEdit = reimbursementOptional.get();
+            reimbursementEdit.setDescription(null);//get this
             return reimbursementRepository.save(reimbursementEdit);
         } 
         return null;
