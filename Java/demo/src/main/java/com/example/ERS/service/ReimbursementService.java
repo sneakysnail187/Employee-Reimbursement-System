@@ -61,17 +61,20 @@ public class ReimbursementService {
     }
 
     @Transactional
-    public Reimbursement updateReimbursementStatus(String token, StatusEditRequest reimbursement) {
-        Role role = jwtService.getRoleFromToken(token);
+    public Reimbursement updateReimbursementStatus(String token, StatusEditRequest reimbursement) {//verify perms from token later
+        //Role role = jwtService.getRoleFromToken(token);
         String status = reimbursement.getStatus();
 
-        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
+        //System.out.println(reimbursement.getReimbursementid());
+
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());//id is null
         if(reimbursementOptional.isPresent() &&
-         (status.equals("Pending") || status.equals("Approved") || status.equals("Denied")) &&
-          role.getRole().equals("Manager")) {
+         (status.equals("Pending") || status.equals("Approved") || status.equals("Denied"))) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
             reimbursementEdit.setStatus(status);
-            return reimbursementRepository.save(reimbursementEdit);
+            reimbursementRepository.save(reimbursementEdit);
+            reimbursementRepository.flush();
+            return reimbursementEdit;
         } 
         return null;
     }
@@ -107,7 +110,7 @@ public class ReimbursementService {
 
     }
 
-    public List<Reimbursement> getAllReimbursements(String token) {
+    public List<Reimbursement> getAllReimbursements(String token) { //verify perms from token later
         CopyOnWriteArrayList<Reimbursement> reimbursements = new CopyOnWriteArrayList<Reimbursement>(reimbursementRepository.findAll());
         reimbursements.forEach(entityManager::detach);
         return reimbursements;

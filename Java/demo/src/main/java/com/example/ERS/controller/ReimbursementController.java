@@ -46,6 +46,8 @@ public class ReimbursementController {
     @PatchMapping("/reimbursement/status")
     public ResponseEntity editTicketStatus(@RequestHeader(name="Authorization") String token, @RequestBody StatusEditRequest ticket) {
 
+        System.out.println(ticket.getReimbursementid());
+
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementStatus(token, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
