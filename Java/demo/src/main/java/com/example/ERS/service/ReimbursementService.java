@@ -107,15 +107,14 @@ public class ReimbursementService {
 
     }
 
-    @Transactional
-    public List<Reimbursement> getUserPendingReimbursements(String token, Integer id) {
-        return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserIDAndStatus(id, "Pending"));
+    public List<Reimbursement> getAllReimbursements(String token) {
+        CopyOnWriteArrayList<Reimbursement> reimbursements = new CopyOnWriteArrayList<Reimbursement>(reimbursementRepository.findAll());
+        reimbursements.forEach(entityManager::detach);
+        return reimbursements;
     }
 
-    public List<Reimbursement> getAllReimbursements(String token) {
-        Role role = jwtService.getRoleFromToken(token);
-        if(role.getRole().equals("Manager")) return new ArrayList<Reimbursement>(reimbursementRepository.findAll());
-        return null;
+    public List<Reimbursement> getUserPendingReimbursements(String token, Integer id) {
+        return new ArrayList<Reimbursement>(reimbursementRepository.findAllByUserIDAndStatus(id, "Pending"));
     }
 
     public List<Reimbursement> getAllPendingReimbursements(String token) {

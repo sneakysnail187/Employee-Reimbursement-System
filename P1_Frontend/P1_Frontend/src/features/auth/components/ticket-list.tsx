@@ -11,8 +11,8 @@ import { useTicketList } from "../hooks/use-ticket-list";
 
 export function TicketList() {
     const { data } = useTicketList();
-    //console.log("Tickets received: ",  data);
-    //console.log("Is Array?: ", Array.isArray(data));
+    console.log("Tickets received: ",  data);
+    console.log("Is Array?: ", Array.isArray(data));
     return (
         <Table>
             <TableHeader>

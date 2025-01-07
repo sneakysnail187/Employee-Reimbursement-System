@@ -12,8 +12,9 @@ export function StatusSelect({initialValue, onChange}: StatusSelectProps) {
                 <SelectValue placeholder="Select a Status" /> 
             </SelectTrigger>
             <SelectContent>
-                <SelectItem value="Employee">Employee</SelectItem>
-                <SelectItem value="Manager">Manager</SelectItem>
+                <SelectItem value="Pending">Pending</SelectItem>
+                <SelectItem value="Approved">Approved</SelectItem>
+                <SelectItem value="Denied">Denied</SelectItem>
             </SelectContent>
         </Select>
     );

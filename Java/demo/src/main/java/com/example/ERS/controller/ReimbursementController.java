@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import com.example.ERS.dto.Request.AmountEditRequest;
 import com.example.ERS.dto.Request.DescriptionEditRequest;
 import com.example.ERS.dto.Request.StatusEditRequest;
-import com.example.ERS.dto.response.ReimbursementResponse;
+import com.example.ERS.dto.response.AllReimbursementResponse;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.service.ReimbursementService;
 
@@ -85,22 +85,22 @@ public class ReimbursementController {
         return ResponseEntity.status(401).body(null);
     }
 
+    @GetMapping("/reimbursements/all")//take the status from uri param later
+    public ResponseEntity getAllTickets(@RequestHeader(name="Authorization") String token) {
+        List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
+
+        if(!reimbursementsOptional.isEmpty()) { //find a better way to do this
+            List<AllReimbursementResponse> responses = new ArrayList<>(reimbursementsOptional.stream().map(AllReimbursementResponse::new).collect(Collectors.toList()));
+            return ResponseEntity.status(200).body(responses);
+        }
+        return ResponseEntity.status(401).body(null);
+    }
+
     @GetMapping("/users/reimbursements?status=pending")//take the status from uri param later
     public ResponseEntity getUserPendingTickets(@RequestHeader(name="Authorization") String token) {
 
         int id = jwtService.getIdFromToken(token);
         List<Reimbursement> reimbursementsOptional = reimbursementService.getUserPendingReimbursements(token, id);
-
-        if(reimbursementsOptional != null) { //find a better way to do this
-            return ResponseEntity.status(200).body(reimbursementsOptional.toString());
-        }
-        return ResponseEntity.status(401).body(null);
-    }
-
-    @GetMapping("/reimbursements/all")//take the status from uri param later
-    public ResponseEntity getAllTickets(@RequestHeader(name="Authorization") String token) {
-
-        List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
 
         if(reimbursementsOptional != null) { //find a better way to do this
             return ResponseEntity.status(200).body(reimbursementsOptional.toString());

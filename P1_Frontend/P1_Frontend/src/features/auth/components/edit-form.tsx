@@ -10,9 +10,22 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { useStatus } from "../hooks/use-status";
+import { useDescription } from "../hooks/use-description";
+import { useAmount } from "../hooks/use-amount";
 
-export function EditForm() {
+interface EditFormProps {
+  open: boolean;
+  setOpen: (value: boolean) => void;
+}
+
+export function EditForm({ open, setOpen }: EditFormProps) {
   const { mutate: editTicket, isPending } = useStatus();
 
   // 1. Define your form.
@@ -63,5 +76,4 @@ export function EditForm() {
       </form>
     </Form>
   );
-}
-*/
+}*/

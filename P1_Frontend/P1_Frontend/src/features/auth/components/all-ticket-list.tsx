@@ -15,8 +15,8 @@ export function AllTicketList() {
     const { data } = useAllTicketList();
     const statusFn = useStatus();
 
-    //console.log("Tickets received: ",  data);
-    //console.log("Is Array?: ", Array.isArray(data));
+    console.log("Tickets received: ",  data);
+    console.log("Is Array?: ", Array.isArray(data));
 
     return (
         <Table>
@@ -32,13 +32,13 @@ export function AllTicketList() {
             {data?.length === 0 ? ("No tickets found") : (
             <TableBody>
                 {Array.isArray(data) && data.map((ticket) => (
-                    <TableRow key={ticket.reimbId}>
-                        <TableCell className="font-medium">{ticket.reimbId}</TableCell>
-                        <TableCell className="font-medium">{ticket.user.username}</TableCell>
+                    <TableRow key={ticket.reimbursementId}>
+                        <TableCell className="font-medium">{ticket.reimbursementId}</TableCell>
+                        <TableCell className="font-medium">{ticket.username}</TableCell>
                         <TableCell className="font-medium">{ticket.amount}</TableCell>
                         <TableCell className="font-medium">{ticket.description}</TableCell>
                         <TableCell className="font-medium">
-                            <StatusSelect initialValue={ticket.status} onChange={(value) => statusFn.mutate({ reimbId: ticket.reimbId, status: value, })} />
+                            <StatusSelect initialValue={ticket.status} onChange={(value) => statusFn.mutate({ reimbId: ticket.reimbursementId, status: value, })} />
                         </TableCell>
                     </TableRow>
                 ))}

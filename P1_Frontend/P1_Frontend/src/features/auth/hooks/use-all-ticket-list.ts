@@ -1,16 +1,17 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios-config";
-import { ticketListSchema } from "../schema/ticket-list-schema";
 
-export function useAllTicketList() {
+export function useAllTicketList(): UseQueryResult<any[]> {
     return useQuery({
         queryKey: ["all-ticket-list"],
         queryFn: async () => {
-            const resp = await axiosInstance.get("/reimbursements/all", {headers: {'Authorization': localStorage.getItem("token")}});
-            const data = ticketListSchema.parse(resp.data);
-            return data;
+            try{
+                const resp = await axiosInstance.get("/reimbursements/all", {headers: {'Authorization': localStorage.getItem("token")}});
+                return resp.data;
+            } catch (e) {
+                console.error(e);
+            }
+            
         },
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
     });
 }
