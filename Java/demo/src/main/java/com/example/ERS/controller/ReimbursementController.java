@@ -16,6 +16,8 @@ import com.example.ERS.dto.Request.StatusEditRequest;
 import com.example.ERS.dto.response.AllReimbursementResponse;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.service.ReimbursementService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 
 import jakarta.transaction.Transactional;
 
@@ -43,12 +45,11 @@ public class ReimbursementController {
     //set status automatically not in postman
 
     @Transactional
-    @PatchMapping("/reimbursement/status")
-    public ResponseEntity editTicketStatus(@RequestHeader(name="Authorization") String token, @RequestBody StatusEditRequest ticket) {
+    @PatchMapping("/reimbursement/status/{id}")
+    public ResponseEntity editTicketStatus(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String status) throws JsonMappingException, JsonProcessingException {
 
-        System.out.println(ticket.getReimbursementid());
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementStatus(token, id, status));
 
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementStatus(token, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
@@ -56,10 +57,10 @@ public class ReimbursementController {
     }
 
     @Transactional
-    @PatchMapping("/reimbursement/amount")
-    public ResponseEntity editTicketAmount(@RequestHeader(name="Authorization") String token, @RequestBody AmountEditRequest ticket) {
+    @PatchMapping("/reimbursement/amount/{id}")
+    public ResponseEntity editTicketAmount(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
 
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementAmount(token, ticket));
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementAmount(token, id, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
@@ -67,10 +68,10 @@ public class ReimbursementController {
     }
 
     @Transactional
-    @PatchMapping("/reimbursement/description")
-    public ResponseEntity editTicketDescription(@RequestHeader(name="Authorization") String token, @RequestBody DescriptionEditRequest ticket) {
+    @PatchMapping("/reimbursement/description/{id}")
+    public ResponseEntity editTicketDescription(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
 
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementDescription  (token, ticket));
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementDescription(token, id, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }

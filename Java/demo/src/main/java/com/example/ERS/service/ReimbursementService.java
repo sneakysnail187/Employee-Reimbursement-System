@@ -7,6 +7,10 @@ import com.example.ERS.dto.Request.DescriptionEditRequest;
 import com.example.ERS.dto.Request.StatusEditRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -61,13 +65,12 @@ public class ReimbursementService {
     }
 
     @Transactional
-    public Reimbursement updateReimbursementStatus(String token, StatusEditRequest reimbursement) {//verify perms from token later
-        //Role role = jwtService.getRoleFromToken(token);
-        String status = reimbursement.getStatus();
+    public Reimbursement updateReimbursementStatus(String token, Integer id, String statusJSON) throws JsonMappingException, JsonProcessingException {//verify perms from token later
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(statusJSON);
+        String status = node.get("status").asText();
 
-        //System.out.println(reimbursement.getReimbursementid());
-
-        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());//id is null
         if(reimbursementOptional.isPresent() &&
          (status.equals("Pending") || status.equals("Approved") || status.equals("Denied"))) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
@@ -80,24 +83,32 @@ public class ReimbursementService {
     }
 
     @Transactional
-    public Reimbursement updateReimbursementAmount(String token, AmountEditRequest reimbursement) {
+    public Reimbursement updateReimbursementAmount(String token, Integer id, String amountJSON) throws JsonMappingException, JsonProcessingException {
 
-        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(amountJSON);
+        Double amount = node.get("amount").asDouble();
+        
         if(reimbursementOptional.isPresent()) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
-            reimbursementEdit.setAmount(null);//get this
+            reimbursementEdit.setAmount(amount);
             return reimbursementRepository.save(reimbursementEdit);
         } 
         return null;
     }
 
     @Transactional
-    public Reimbursement updateReimbursementDescription(String token, DescriptionEditRequest reimbursement) {
+    public Reimbursement updateReimbursementDescription(String token, Integer id, String descriptionJSON) throws JsonMappingException, JsonProcessingException {
 
-        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(reimbursement.getReimbursementid());
+        Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode node = mapper.readTree(descriptionJSON);
+        String description = node.get("status").asText();
+
         if(reimbursementOptional.isPresent()) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
-            reimbursementEdit.setDescription(null);//get this
+            reimbursementEdit.setDescription(description);
             return reimbursementRepository.save(reimbursementEdit);
         } 
         return null;

@@ -15,9 +15,6 @@ export function AllTicketList() {
     const { data } = useAllTicketList();
     const statusFn = useStatus();
 
-    console.log("Tickets received: ",  data);
-    console.log("Is Array?: ", Array.isArray(data));
-
     return (
         <Table>
             <TableHeader>
@@ -38,7 +35,10 @@ export function AllTicketList() {
                         <TableCell className="font-medium">{ticket.amount}</TableCell>
                         <TableCell className="font-medium">{ticket.description}</TableCell>
                         <TableCell className="font-medium">
-                            <StatusSelect initialValue={ticket.status} onChange={(value) => statusFn.mutate({ reimbId: ticket.reimbursementId, status: value, })} />
+                            <StatusSelect initialValue={ticket.status} onChange={(value) => {
+                                statusFn.mutate({ reimbId: ticket.reimbursementId, status: value });
+                                ticket.status = value;
+                            }} />
                         </TableCell>
                     </TableRow>
                 ))}

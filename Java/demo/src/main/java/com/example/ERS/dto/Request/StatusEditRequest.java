@@ -1,9 +1,7 @@
 package com.example.ERS.dto.Request;
 
 public class StatusEditRequest {
-    
 
-    private Integer reimbursementid;
     private String status;
 
    
@@ -14,10 +12,8 @@ public class StatusEditRequest {
         this.status = status;
     }
 
-    public Integer getReimbursementid() {
-        return reimbursementid;
-    }
-    public void setReimbursementid(Integer reimbursementid) {
-        this.reimbursementid = reimbursementid;
+    @Override
+    public String toString() {
+        return "StatusEditRequest [status=" + status + "]";
     }
 }

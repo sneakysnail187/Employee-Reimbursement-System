@@ -1,18 +1,23 @@
 import { z } from "zod";
 
 export const editSchema = z.object({
-  reimbursementid: z
+  reimbId: z
     .number({
       required_error: "ID is required",
       invalid_type_error: "ID must be an integer",
     })
     .int()
     .positive(),
-  status: z
+  description: z
     .string({
-      message: "Status is required",
+      message: "Enter description",
+    }),
+  amount: z
+    .number({
+      required_error: "Amount is required",
+      invalid_type_error: "Amount must be a number",
     })
-    .min(1, "Status is required"),
+    .positive(),
 });
 
 export type EditSchema = z.infer<typeof editSchema>;

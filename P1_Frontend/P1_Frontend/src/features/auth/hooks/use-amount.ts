@@ -12,7 +12,7 @@ export function useAmount() {
 
     return useMutation({
         mutationFn: async ({reimbId, amount}: AmountSchema) => {
-            const resp = await axiosInstance.patch("/reimbursement/amount",{reimbId, amount}, {headers: {'Authorization': localStorage.getItem("token")}});
+            const resp = await axiosInstance.patch(`/reimbursement/amount/${reimbId}`,{amount}, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
         onSuccess: () => {

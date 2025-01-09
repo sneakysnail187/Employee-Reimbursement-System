@@ -1,6 +1,5 @@
 import { toast } from "sonner";
 import { LoginSchema } from "../schema/login-schema";
-
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios-config";
 import { useRouter } from "@tanstack/react-router";
@@ -15,7 +14,6 @@ export function useLogin() {
       const resp = await axiosInstance.post("/auth/login", values);
       const { data } = resp;
       const { role, ...decoded } = jwtDecode(data) as { role: string };
-      console.log(role);
       localStorage.setItem("role", role);
       localStorage.setItem("token", resp.data);
       return { ...decoded, role };

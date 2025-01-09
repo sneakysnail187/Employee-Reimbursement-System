@@ -1,5 +1,5 @@
-/*import { useForm } from "react-hook-form";
-
+import { useForm } from "react-hook-form";
+import { editSchema, EditSchema } from "../schema/edit-schema";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -16,9 +16,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { useStatus } from "../hooks/use-status";
-import { useDescription } from "../hooks/use-description";
-import { useAmount } from "../hooks/use-amount";
+import { useEdit } from "../hooks/use-edit";
 
 interface EditFormProps {
   open: boolean;
@@ -26,27 +24,34 @@ interface EditFormProps {
 }
 
 export function EditForm({ open, setOpen }: EditFormProps) {
-  const { mutate: editTicket, isPending } = useStatus();
+  const { mutate: editTicket, isPending } = useEdit();
 
-  // 1. Define your form.
-  const form = useForm<StatusSchema>({
-    resolver: zodResolver(statusSchema),
+  const form = useForm<EditSchema>({
+    resolver: zodResolver(editSchema),
     defaultValues: {
-      reimbursementid: 0,
-      status: "",
+      reimbId: 0,
+      description: "",
+      amount: 0
     },
   });
 
-  function onSubmit(values: StatusSchema) {
+  function onSubmit(values: EditSchema) {
     editTicket(values);
   }
 
   return (
-    <Form {...form}>
+    <Dialog open={open} onOpenChange={() => {
+      form.reset();
+      setOpen(false)}}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Ticket</DialogTitle>
+          </DialogHeader>
+          <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
         <FormField
           control={form.control}
-          name="reimbursementid"
+          name="reimbId"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -59,11 +64,24 @@ export function EditForm({ open, setOpen }: EditFormProps) {
 
         <FormField
           control={form.control}
-          name="status"
+          name="description"
           render={({ field }) => (
             <FormItem>
               <FormControl>
                 <Input type="text" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="amount"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input type="number" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,5 +93,7 @@ export function EditForm({ open, setOpen }: EditFormProps) {
         </Button>
       </form>
     </Form>
+        </DialogContent>
+    </Dialog>
   );
-}*/
+}
