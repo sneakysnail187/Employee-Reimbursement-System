@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormMessage,
@@ -23,15 +24,15 @@ interface EditFormProps {
   setOpen: (value: boolean) => void;
 }
 
-export function EditForm({ open, setOpen }: EditFormProps) {
+export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditSchema }) {
   const { mutate: editTicket, isPending } = useEdit();
 
   const form = useForm<EditSchema>({
     resolver: zodResolver(editSchema),
     defaultValues: {
-      reimbId: 0,
-      description: "",
-      amount: 0
+      reimbId: data?.reimbId || 0,
+      description: data?.description || "",
+      amount: data?.amount || 0
     },
   });
 
@@ -48,51 +49,44 @@ export function EditForm({ open, setOpen }: EditFormProps) {
             <DialogTitle>Edit Ticket</DialogTitle>
           </DialogHeader>
           <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        <FormField
-          control={form.control}
-          name="reimbId"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="text" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription>
+                      The description of the ticket.
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="text" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+              <FormField
+                control={form.control}
+                name="amount"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="number" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription>
+                      The amount to be reimbursed.
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
 
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="number" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button type="submit" disabled={isPending}>
-          Submit Editted Ticket
-        </Button>
-      </form>
-    </Form>
+              <Button type="submit" disabled={isPending}>
+                Submit Editted Ticket
+              </Button>
+            </form>
+          </Form>
         </DialogContent>
     </Dialog>
   );

@@ -65,7 +65,7 @@ public class ReimbursementController {
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
         return ResponseEntity.status(401).body(null);
-    }
+    }//merge with description
 
     @Transactional
     @PatchMapping("/reimbursement/description/{id}")
