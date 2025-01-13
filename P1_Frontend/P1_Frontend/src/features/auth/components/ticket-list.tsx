@@ -7,13 +7,9 @@ import{
     TableRow,
 } from "@/components/ui/table"
 import { useTicketList } from "../hooks/use-ticket-list";
-import { useState } from "react";
-import { EditForm } from "./edit-form";
-import { Button } from "@/components/ui/button";
 
 export function TicketList() {
     const { data } = useTicketList();
-    const [open, setOpen] = useState(false)
 
     return (
             <Table>
@@ -23,7 +19,6 @@ export function TicketList() {
                         <TableHead className="w-[100px]">Amount</TableHead>
                         <TableHead className="w-[100px]">Description</TableHead>
                         <TableHead className="w-[100px]">Status</TableHead>
-                        <TableHead className="w-[100px]">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 {data?.length === 0 ? ("No tickets found") : (
@@ -34,12 +29,6 @@ export function TicketList() {
                             <TableCell className="font-medium">{ticket.amount}</TableCell>
                             <TableCell className="font-medium">{ticket.description}</TableCell>
                             <TableCell className="font-medium">{ticket.status}</TableCell>
-                            <TableCell className="font-medium">
-                            <Button className="font-medium" onClick={() => setOpen(true)}>
-                                Edit
-                            </Button>
-                            <EditForm open={open} setOpen={setOpen} data={ticket}/>
-                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

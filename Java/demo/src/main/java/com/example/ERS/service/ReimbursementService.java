@@ -84,13 +84,14 @@ public class ReimbursementService {
     @Transactional
     public Reimbursement updateReimbursement(String token, Integer id, String ticketJSON) throws JsonMappingException, JsonProcessingException {
 
+        int userId = jwtService.getIdFromToken(token);
         Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
         ObjectMapper mapper = new ObjectMapper();
         JsonNode node = mapper.readTree(ticketJSON);
         Double amount = node.get("amount").asDouble();
         String description = node.get("description").asText();
         
-        if(reimbursementOptional.isPresent()) {
+        if(reimbursementOptional.isPresent() && userId == reimbursementOptional.get().getUserID().getUserId()) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
             reimbursementEdit.setAmount(amount);
             reimbursementEdit.setDescription(description);

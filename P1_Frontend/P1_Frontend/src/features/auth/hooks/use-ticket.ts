@@ -15,7 +15,7 @@ export function useTicket() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["ticket"],
+        queryKey: ["ticket-list"],
       });
       toast.success("Submitted ticket successfully.");
       router.navigate({ to: "/tickets/userTickets" });

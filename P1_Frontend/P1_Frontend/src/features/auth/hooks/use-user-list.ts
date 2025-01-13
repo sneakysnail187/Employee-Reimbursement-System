@@ -10,7 +10,5 @@ export function useUserList() {
             const data = userListSchema.parse(resp.data);
             return data;
         },
-        refetchOnWindowFocus: false,
-        refetchOnReconnect: false,
     });
 }

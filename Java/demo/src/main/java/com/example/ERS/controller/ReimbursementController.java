@@ -57,7 +57,6 @@ public class ReimbursementController {
     @Transactional
     @PatchMapping("/reimbursement/edit/{id}")
     public ResponseEntity editTicket(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
-        System.out.println(ticket);
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, id, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());

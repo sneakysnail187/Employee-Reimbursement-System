@@ -14,7 +14,7 @@ public interface ReimbursementRepository extends JpaRepository<Reimbursement, In
 
     List<Reimbursement> findAllByStatus(String string);
 
-    @Query("SELECT r FROM Reimbursement r WHERE r.userID = ?1")
+    @Query("SELECT r FROM Reimbursement r WHERE r.userID = ?1 ORDER BY r.reimbursementId ASC")
     List<Reimbursement> findAllByUserID(@Param("id") User id);
 
     @Query("SELECT r FROM Reimbursement r WHERE r.userID = ?1 AND r.status = ?2")

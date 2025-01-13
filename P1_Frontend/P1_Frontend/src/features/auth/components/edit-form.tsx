@@ -24,15 +24,15 @@ interface EditFormProps {
   setOpen: (value: boolean) => void;
 }
 
-export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditSchema }) {
+export function EditForm({ open, setOpen }: EditFormProps) {
   const { mutate: editTicket } = useEdit();
 
   const form = useForm<EditSchema>({
     resolver: zodResolver(editSchema),
     defaultValues: {
-      reimbId: data?.reimbId,
-      description: data?.description,
-      amount: data?.amount
+      reimbId: 0,
+      description: "",
+      amount: 0
     },
   }); // MAY NEED TO CUT THIS IF I CANT AT LEAST GET A STACK TRACE
 
@@ -56,6 +56,25 @@ export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditS
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+                control={form.control}
+                name="reimbId"
+                render={({ field: { onChange, ...field} }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="number" 
+                      {...field}
+                      onChange={(e) => onChange(e.target.valueAsNumber)}
+                       />
+                    </FormControl>
+                    <FormMessage />
+                    <FormDescription>
+                      The ID of the ticket.
+                    </FormDescription>
+                  </FormItem>
+                )}
+              />
+
               <FormField
                 control={form.control}
                 name="description"

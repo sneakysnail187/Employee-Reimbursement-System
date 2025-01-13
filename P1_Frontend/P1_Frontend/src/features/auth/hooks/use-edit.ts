@@ -16,7 +16,7 @@ export function useEdit() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["ticket-edit"], //check this later
+                queryKey: ["ticket-list"], //check this later
             });
             toast.success("Ticket updated successfully.");
             router.navigate({ to: "/tickets/userTickets" });

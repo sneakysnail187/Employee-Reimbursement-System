@@ -1,6 +1,6 @@
 import React from "react";
-import { Link, LucideIcon, SidebarIcon } from "lucide-react";
-
+import { Link, LucideIcon, SidebarIcon} from "lucide-react";
+import { Label } from "../ui/label"; 
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/store/use-sidebar";
 import { Button } from "../ui/button";
@@ -57,6 +57,24 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
 
 export function SidebarContent({ children }: { children: React.ReactNode }) {
   return <div className="flex flex-col gap-y-10">{children}</div>;
+}
+
+export function SidebarGroup({ children }: { children: React.ReactNode }) {
+  return <div className="flex flex-col px-2">{children}</div>;
+}
+
+export function SidebarLabel({ children }: { children: React.ReactNode }) {
+  const { isOpen } = useSidebar();
+  return (
+    <Label
+      className={cn(
+        "text-muted-foreground h-9 flex items-center px-4",
+        isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      )}
+    >
+      {children}
+    </Label>
+  );
 }
 
 export function SidebarItem({
