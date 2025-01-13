@@ -2,8 +2,7 @@ package com.example.ERS.service;
 
 import com.example.ERS.entity.User;
 import com.example.ERS.entity.Role;
-import com.example.ERS.dto.Request.AmountEditRequest;
-import com.example.ERS.dto.Request.DescriptionEditRequest;
+import com.example.ERS.dto.Request.EditRequest;
 import com.example.ERS.dto.Request.StatusEditRequest;
 import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.repository.UserRepository;
@@ -83,22 +82,26 @@ public class ReimbursementService {
     }
 
     @Transactional
-    public Reimbursement updateReimbursementAmount(String token, Integer id, String amountJSON) throws JsonMappingException, JsonProcessingException {
+    public Reimbursement updateReimbursement(String token, Integer id, String ticketJSON) throws JsonMappingException, JsonProcessingException {
 
         Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
         ObjectMapper mapper = new ObjectMapper();
-        JsonNode node = mapper.readTree(amountJSON);
+        JsonNode node = mapper.readTree(ticketJSON);
         Double amount = node.get("amount").asDouble();
+        String description = node.get("description").asText();
         
         if(reimbursementOptional.isPresent()) {
             Reimbursement reimbursementEdit = reimbursementOptional.get();
             reimbursementEdit.setAmount(amount);
-            return reimbursementRepository.save(reimbursementEdit);
+            reimbursementEdit.setDescription(description);
+            reimbursementRepository.save(reimbursementEdit);
+            reimbursementRepository.flush();
+            return reimbursementEdit;
         } 
         return null;
     }
 
-    @Transactional
+  /*  @Transactional
     public Reimbursement updateReimbursementDescription(String token, Integer id, String descriptionJSON) throws JsonMappingException, JsonProcessingException {
 
         Optional<Reimbursement> reimbursementOptional = reimbursementRepository.findById(id);
@@ -112,7 +115,7 @@ public class ReimbursementService {
             return reimbursementRepository.save(reimbursementEdit);
         } 
         return null;
-    }
+    } */
 
     public List<Reimbursement> getUserReimbursements(String token) {
         CopyOnWriteArrayList<Reimbursement> reimbursements = new CopyOnWriteArrayList<Reimbursement>(reimbursementRepository.findAllByUserID(jwtService.decodeToken(token)));

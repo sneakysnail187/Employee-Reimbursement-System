@@ -25,19 +25,25 @@ interface EditFormProps {
 }
 
 export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditSchema }) {
-  const { mutate: editTicket, isPending } = useEdit();
+  const { mutate: editTicket } = useEdit();
 
   const form = useForm<EditSchema>({
     resolver: zodResolver(editSchema),
     defaultValues: {
-      reimbId: data?.reimbId || 0,
-      description: data?.description || "",
-      amount: data?.amount || 0
+      reimbId: data?.reimbId,
+      description: data?.description,
+      amount: data?.amount
     },
-  });
+  }); // MAY NEED TO CUT THIS IF I CANT AT LEAST GET A STACK TRACE
 
   function onSubmit(values: EditSchema) {
-    editTicket(values);
+    console.log(values);
+    editTicket(values, {
+      onSuccess: () => {
+        form.reset();
+        setOpen(false);
+      },
+    });
   }
 
   return (
@@ -69,10 +75,11 @@ export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditS
               <FormField
                 control={form.control}
                 name="amount"
-                render={({ field }) => (
+                render={({ field: { onChange, ...field } }) => (
                   <FormItem>
                     <FormControl>
-                      <Input type="number" {...field} />
+                      <Input type="number" {...field} 
+                      onChange={(e) => onChange(e.target.valueAsNumber)}/>
                     </FormControl>
                     <FormMessage />
                     <FormDescription>
@@ -82,7 +89,7 @@ export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditS
                 )}
               />
 
-              <Button type="submit" disabled={isPending}>
+              <Button type="submit" >
                 Submit Editted Ticket
               </Button>
             </form>
@@ -91,3 +98,4 @@ export function EditForm({ open, setOpen, data }: EditFormProps & { data?: EditS
     </Dialog>
   );
 }
+

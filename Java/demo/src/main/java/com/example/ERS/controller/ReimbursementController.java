@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
-
-import com.example.ERS.dto.Request.AmountEditRequest;
-import com.example.ERS.dto.Request.DescriptionEditRequest;
+import com.example.ERS.dto.Request.EditRequest;
 import com.example.ERS.dto.Request.StatusEditRequest;
 import com.example.ERS.dto.response.AllReimbursementResponse;
 import com.example.ERS.entity.Reimbursement;
@@ -57,17 +55,17 @@ public class ReimbursementController {
     }
 
     @Transactional
-    @PatchMapping("/reimbursement/amount/{id}")
-    public ResponseEntity editTicketAmount(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
-
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementAmount(token, id, ticket));
+    @PatchMapping("/reimbursement/edit/{id}")
+    public ResponseEntity editTicket(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
+        System.out.println(ticket);
+        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, id, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
         return ResponseEntity.status(401).body(null);
     }//merge with description
 
-    @Transactional
+   /* @Transactional
     @PatchMapping("/reimbursement/description/{id}")
     public ResponseEntity editTicketDescription(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
 
@@ -76,7 +74,7 @@ public class ReimbursementController {
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
         return ResponseEntity.status(401).body(null);
-    }
+    }*/        
 
     @GetMapping("/users/reimbursements")//take the status from uri param later
     public ResponseEntity getUserTickets(@RequestHeader(name="Authorization") String token) {
