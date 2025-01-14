@@ -1,9 +1,10 @@
 import React from "react";
-import { Link, LucideIcon, SidebarIcon} from "lucide-react";
+import { LucideIcon, SidebarIcon} from "lucide-react";
 import { Label } from "../ui/label"; 
 import { cn } from "@/lib/utils";
 import { useSidebar } from "@/store/use-sidebar";
 import { Button } from "../ui/button";
+import { Link as RouterLink, useRouter } from "@tanstack/react-router"
 
 export function SidebarWrapper({ children }: { children: React.ReactNode }) {
   const {isMounted} = useSidebar();
@@ -15,13 +16,14 @@ export function SidebarWrapper({ children }: { children: React.ReactNode }) {
 export function SidebarTrigger() {
   const { toggle } = useSidebar();
 
-  return (<div>
-  <SidebarIcon
-      role="button"
-      className="size-4 absolute m-5 z-50 transition-all ease-in-out duration-300 hover:scale-105 text-white"
-      onClick={toggle}
-    />
-  </div>
+  return (
+    <div>
+      <SidebarIcon
+        role="button"
+        className="size-4 absolute m-6  z-50 transition-all ease-in-out duration-300 hover:scale-105 text-white"
+        onClick={toggle}
+      />
+    </div>
   );
 }
 
@@ -46,7 +48,7 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
   return (
     <div
       className={cn(
-        "bg-slate-900 min-h-[calc(100vh-1px)] text-white fixed transition-all ease-in-out duration-300 overflow-y-auto overflow-x-hidden",
+        "bg-slate-900 min-h-[calc(100vh-1px)] text-white fixed transition-all ease-in-out duration-300 overflow-y-auto overflow-x-hidden flex flex-col",
         isOpen ? "w-64" : "w-16"
       )}
     >
@@ -56,11 +58,11 @@ export function Sidebar({ children }: { children: React.ReactNode }) {
 }
 
 export function SidebarContent({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-col gap-y-10">{children}</div>;
+  return <div className="flex flex-col gap-y-10 my-10">{children}</div>;
 }
 
 export function SidebarGroup({ children }: { children: React.ReactNode }) {
-  return <div className="flex flex-col px-2">{children}</div>;
+  return <div className="flex flex-col px-2 ">{children}</div>;
 }
 
 export function SidebarLabel({ children }: { children: React.ReactNode }) {
@@ -68,7 +70,7 @@ export function SidebarLabel({ children }: { children: React.ReactNode }) {
   return (
     <Label
       className={cn(
-        "text-muted-foreground h-9 flex items-center px-4",
+        "text-muted-foreground h-9 flex items-center px-4 text-white",
         isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
     >
@@ -78,23 +80,26 @@ export function SidebarLabel({ children }: { children: React.ReactNode }) {
 }
 
 export function SidebarItem({
+  name,
   href,
   icon: Icon,
 }: {
+  name: string;
   href: string;
   icon: LucideIcon;
 }) {
   const { isOpen } = useSidebar();
+  const router = useRouter();
 
   return (
-    <Button variant={"ghost"} className="flex justify-start">
-      <Icon />
-      <Link
+    <Button variant={"ghost"} onClick = {() => {router.navigate({to: href})}} className="flex items-center justify-start ">
+      <Icon className = "mr-2 h-4 w-4" />
+      <RouterLink
         to={href}
         className={cn(isOpen ? "opacity-100" : "opacity-0 pointer-events-none")}
       >
 
-      </Link>
+      </RouterLink>
     </Button>
   );
 }

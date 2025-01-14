@@ -21,5 +21,12 @@ public class RoleController {
         if(newRole == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(newRole);
     }
+
+    @GetMapping("/role")
+    public ResponseEntity<Role> getRole(@RequestHeader(name="Authorization") String token) {
+        Role role = roleService.getRole(token);
+        if(role == null) return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok(role);
+    }
     
 }

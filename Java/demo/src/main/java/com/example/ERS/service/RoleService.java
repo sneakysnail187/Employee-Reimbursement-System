@@ -18,6 +18,10 @@ public class RoleService {
     @Lazy
     RoleRepository roleRepository;
 
+    @Autowired
+    @Lazy
+    JwtService jwtService;
+
 
     @Transactional
     public Role createRole(Role role) {
@@ -29,6 +33,11 @@ public class RoleService {
         Role createdRole = roleRepository.save(role);
         roleRepository.flush();
         return createdRole;
+    }
+
+    public Role getRole(String token) {
+        Role role = jwtService.getRoleFromToken(token);
+        return role;
     }
 
 }

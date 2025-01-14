@@ -1,14 +1,16 @@
-import { useQuery } from "@tanstack/react-query";
-import { userListSchema } from "../schema/user-list-schema";
+import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axios-config";
 
-export function useUserList() {
+export function useUserList(): UseQueryResult<any[]> {
     return useQuery({
-        queryKey: ["userList"],
+        queryKey: ["user-list"],
         queryFn: async () => {
-            const resp = await axiosInstance.get("/users", {headers: {'Authorization': localStorage.getItem("token")}});
-            const data = userListSchema.parse(resp.data);
-            return data;
+            try {
+                const resp = await axiosInstance.get(`/users/allUsers`, {headers: {'Authorization': localStorage.getItem("token")}});
+                return resp.data;
+            } catch (error) {
+                console.error(error);
+            }
         },
     });
 }

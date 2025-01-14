@@ -84,12 +84,12 @@ public class JwtService {
     }
 
     public Role getRoleFromToken(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody()
-                .get("role", Role.class);
+        return new Role(Jwts.parserBuilder()
+        .setSigningKey(getSigningKey())
+        .build()
+        .parseClaimsJws(token)
+        .getBody()
+        .get("role", String.class));
     }
     
     //dtos principal(returned to user), login request, reimbursement request
