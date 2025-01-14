@@ -35,7 +35,6 @@ function RouteComponent() {
                         </SidebarGroup>
                     ))}
                 </SidebarContent>
-        
             </Sidebar>
             <SidebarChildren>
                 <Outlet />

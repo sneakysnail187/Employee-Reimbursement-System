@@ -12,7 +12,6 @@ export function useStatus() {
 
     return useMutation({
         mutationFn: async ({reimbId, status}: StatusSchema) => {
-            console.log(reimbId, status); 
             const resp = await axiosInstance.patch(`/reimbursement/status/${reimbId}`,{status}, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },

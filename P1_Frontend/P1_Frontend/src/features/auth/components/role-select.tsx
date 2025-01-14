@@ -6,7 +6,6 @@ interface RoleSelectProps {
 }
 
 export function RoleSelect({initialValue, onChange}: RoleSelectProps) {
-    console.log(initialValue);
     return (
         <Select value={initialValue} onValueChange={onChange}>
             <SelectTrigger className="w-[180px]">

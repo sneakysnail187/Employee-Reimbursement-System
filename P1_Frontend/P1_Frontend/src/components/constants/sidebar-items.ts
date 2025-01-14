@@ -27,7 +27,7 @@ export const sidebarItems: SidebarGroup[] = [
         name: "User List",
         items: [
             {
-                name: "Users List",
+                name: "User List",
                 href: "/user/allUsers",
                 icon: User,
             },
