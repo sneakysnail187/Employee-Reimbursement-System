@@ -6,10 +6,11 @@ interface RoleSelectProps {
 }
 
 export function RoleSelect({initialValue, onChange}: RoleSelectProps) {
+    console.log(initialValue);
     return (
         <Select value={initialValue} onValueChange={onChange}>
-            <SelectTrigger className="w-[180px]" aria-label = "Select a role">
-                <SelectValue placeholder="Select a role" /> 
+            <SelectTrigger className="w-[180px]">
+                <SelectValue placeholder={initialValue} /> 
             </SelectTrigger>
             <SelectContent>
                 <SelectItem value="Employee">Employee</SelectItem>

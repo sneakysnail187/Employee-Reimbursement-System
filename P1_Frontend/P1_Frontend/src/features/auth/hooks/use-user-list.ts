@@ -6,7 +6,7 @@ export function useUserList(): UseQueryResult<any[]> {
         queryKey: ["user-list"],
         queryFn: async () => {
             try {
-                const resp = await axiosInstance.get(`/users/allUsers`, {headers: {'Authorization': localStorage.getItem("token")}});
+                const resp = await axiosInstance.get(`/user`, {headers: {'Authorization': localStorage.getItem("token")}});
                 return resp.data;
             } catch (error) {
                 console.error(error);

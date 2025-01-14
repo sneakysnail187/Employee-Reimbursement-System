@@ -14,9 +14,6 @@ function RouteComponent() {
     <div>
       <div className="flex flex-col gap-y-5">
         <h1 className="text-2xl font-bold">Dashboard</h1>
-        <Button className="w-fit" onClick={() => setOpen(true)}>
-          Delete User
-        </Button>
       </div>
 
       <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>

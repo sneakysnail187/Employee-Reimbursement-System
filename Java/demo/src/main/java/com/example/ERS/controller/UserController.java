@@ -1,14 +1,16 @@
 package com.example.ERS.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
 
-import com.example.ERS.dto.Request.LoginRequest;
+import com.example.ERS.dto.response.UserListResponse;
 import com.example.ERS.entity.User;
 import com.example.ERS.service.ReimbursementService;
 import com.example.ERS.service.UserService;
@@ -30,11 +32,11 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity getUsers(@RequestHeader(name="Authorization") String token) {
-
         List<User> users = userService.getAllUsers(token);
 
         if(users != null) {
-            return ResponseEntity.status(200).body(users.toString());
+            List<UserListResponse> responses = new ArrayList<>(users.stream().map(UserListResponse::new).collect(Collectors.toList()));
+            return ResponseEntity.status(200).body(responses);
         }
         return ResponseEntity.status(401).body(null);
     }

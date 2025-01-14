@@ -12,7 +12,7 @@ export function useDelete() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["users-list"],
+                queryKey: ["user-list"],
             });
             toast.success("User deleted successfully");
         },

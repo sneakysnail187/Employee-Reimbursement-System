@@ -40,7 +40,6 @@ public class ReimbursementController {
         }
         return ResponseEntity.status(401).body(null);
     }
-    //set status automatically not in postman
 
     @Transactional
     @PatchMapping("/reimbursement/status/{id}")
@@ -62,20 +61,9 @@ public class ReimbursementController {
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
         return ResponseEntity.status(401).body(null);
-    }//merge with description
+    }//find a way to pull data from edit target    
 
-   /* @Transactional
-    @PatchMapping("/reimbursement/description/{id}")
-    public ResponseEntity editTicketDescription(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
-
-        Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementDescription(token, id, ticket));
-        if(reimbursementOptional.isPresent()) { 
-            return ResponseEntity.status(200).body(reimbursementOptional.get());
-        }
-        return ResponseEntity.status(401).body(null);
-    }*/        
-
-    @GetMapping("/users/reimbursements")//take the status from uri param later
+    @GetMapping("/users/reimbursements")
     public ResponseEntity getUserTickets(@RequestHeader(name="Authorization") String token) {
         List<Reimbursement> reimbursements = reimbursementService.getUserReimbursements(token);
 
@@ -85,7 +73,7 @@ public class ReimbursementController {
         return ResponseEntity.status(401).body(null);
     }
 
-    @GetMapping("/reimbursements/all")//take the status from uri param later
+    @GetMapping("/reimbursements/all")
     public ResponseEntity getAllTickets(@RequestHeader(name="Authorization") String token) {
         List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
 
@@ -96,7 +84,7 @@ public class ReimbursementController {
         return ResponseEntity.status(401).body(null);
     }
 
-    @GetMapping("/users/reimbursements?status=pending")//take the status from uri param later
+    @GetMapping("/users/reimbursements?status=pending")
     public ResponseEntity getUserPendingTickets(@RequestHeader(name="Authorization") String token) {
 
         int id = jwtService.getIdFromToken(token);

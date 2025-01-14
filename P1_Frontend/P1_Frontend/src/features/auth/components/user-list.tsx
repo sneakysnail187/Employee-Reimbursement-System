@@ -10,6 +10,7 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 
 export function UserList() {
     const { data: users } = useUserList();
@@ -27,7 +28,8 @@ export function UserList() {
                     <TableHead className="w-[100px]">ID</TableHead>
                     <TableHead className="w-[100px]">Username</TableHead>
                     <TableHead className="w-[100px]">Role</TableHead>
-                    <TableHead className="text-right w-[100px]">Full Name</TableHead>
+                    <TableHead className="w-[100px]">Full Name</TableHead>
+                    <TableHead className="w-[100px]"></TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -36,12 +38,12 @@ export function UserList() {
                         <TableCell className="font-medium">{user.userId}</TableCell>
                         <TableCell className="font-medium">{user.username}</TableCell>
                         <TableCell className="font-medium">
-                            <RoleSelect initialValue={user.roleName} onChange={(value) => roleFn({ userId: user.userId })} />
+                            <RoleSelect initialValue={user.role} onChange={(value) => roleFn({ userId: user.userId })} />
                         </TableCell>
                         <TableCell className="font-medium">{user.fullName}</TableCell>
                         <TableCell className="flex gap-3">
-                            <button onClick={() => deleteUser(user.userId)}
-                             disabled ={deleteFn.status === "pending"}>Delete</button>
+                            <Button onClick={() => deleteUser(user.userId)}
+                             disabled ={deleteFn.status === "pending"}>Delete</Button>
                         </TableCell>
                     </TableRow>
                 ))}
