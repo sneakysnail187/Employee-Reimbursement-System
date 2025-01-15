@@ -13,17 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import org.mindrot.jbcrypt.BCrypt;
 
 @Service
 public class UserService {
 
+    @PersistenceContext
+    EntityManager entityManager;
+
     @Autowired
-    @Lazy
     UserRepository userRepository;
 
     @Autowired
-    @Lazy
     ReimbursementRepository reimbursementRepository;
 
     @Autowired
@@ -63,18 +68,19 @@ public class UserService {
         return null;
     }
 
+    @Transactional
     public User deleteUser(Integer id, String token) {
 
         Role role = jwtService.getRoleFromToken(token);
         Optional<User> userOptional = userRepository.findById(id);
         
         if(userOptional.isPresent() && role.getRole().equals("Manager")) {
-            User user = userOptional.get();
-            List<Reimbursement> reimbursements = user.getReimbursements();
-            for(Reimbursement reimbursement : reimbursements) {
-                reimbursementRepository.delete(reimbursement);
-            }
-            userRepository.delete(user);
+            User user = new User(userOptional.get());
+            User userToDelete = userOptional.get();
+            System.out.println("check");
+            System.out.println(userToDelete);
+            userRepository.deleteById(userToDelete.getUserId()); //whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+            userRepository.flush();
             return user;
         }
         return null;
@@ -84,3 +90,4 @@ public class UserService {
         return BCrypt.hashpw(password, BCrypt.gensalt());
     }
 }
+

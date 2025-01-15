@@ -57,6 +57,19 @@ export function TicketForm({ open, setOpen }: TicketFormProps) {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField
                 control={form.control}
+                name="project"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="text" placeholder="Project" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
                 name="description"
                 render={({ field }) => (
                   <FormItem>

@@ -14,10 +14,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -39,7 +41,7 @@ public class User {
     @JsonBackReference
     private Role roleId;
 
-    @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
     private List<Reimbursement> reimbursements;
 
@@ -48,5 +50,13 @@ public class User {
         this.lastName = lastName;
         this.username = username;
         this.password = password;
+    }
+
+    public User (User user) {
+        this.userId = user.getUserId();
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.username = user.getUsername();
+        this.password = user.getPassword();
     }
 }

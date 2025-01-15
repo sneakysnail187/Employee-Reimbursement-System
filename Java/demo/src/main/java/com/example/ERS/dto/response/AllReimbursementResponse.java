@@ -1,5 +1,7 @@
 package com.example.ERS.dto.response;
 
+import java.time.OffsetDateTime;
+
 import com.example.ERS.entity.Reimbursement;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +15,8 @@ public class AllReimbursementResponse {
     private Double amount;
     private String status;
     private String username;
-
+    private String project;
+    private OffsetDateTime submitted;
 
     public AllReimbursementResponse(Reimbursement r) {
         this.reimbursementId = r.getReimbursementId();
@@ -21,5 +24,7 @@ public class AllReimbursementResponse {
         this.amount = r.getAmount();
         this.status = r.getStatus();
         this.username = r.getUserID().getUsername();
+        this.project = r.getProject();
+        this.submitted = r.getSubmitted();
     }
 }

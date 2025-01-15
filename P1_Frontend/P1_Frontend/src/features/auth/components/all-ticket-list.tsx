@@ -14,6 +14,7 @@ import StatusSelect from "./status-select";
 export function AllTicketList() {
     const { data } = useAllTicketList();
     const statusFn = useStatus();
+    console.log(data);
 
     return (
         <Table>
@@ -22,8 +23,10 @@ export function AllTicketList() {
                     <TableHead className="w-[100px]">ID</TableHead>
                     <TableHead className="w-[100px]">Username</TableHead>
                     <TableHead className="w-[100px]">Amount</TableHead>
+                    <TableHead className="w-[100px]">Project</TableHead>
                     <TableHead className="w-[100px]">Description</TableHead>
                     <TableHead className="w-[100px]">Status</TableHead>
+                    <TableHead className="w-[100px]">Date Posted</TableHead>
                 </TableRow>
             </TableHeader>
             {data?.length === 0 ? ("No tickets found") : (
@@ -33,6 +36,7 @@ export function AllTicketList() {
                         <TableCell className="font-medium">{ticket.reimbursementId}</TableCell>
                         <TableCell className="font-medium">{ticket.username}</TableCell>
                         <TableCell className="font-medium">{ticket.amount}</TableCell>
+                        <TableCell className="font-medium">{ticket.project}</TableCell>
                         <TableCell className="font-medium">{ticket.description}</TableCell>
                         <TableCell className="font-medium">
                             <StatusSelect initialValue={ticket.status} onChange={(value) => {
@@ -40,6 +44,7 @@ export function AllTicketList() {
                                 ticket.status = value;
                             }} />
                         </TableCell>
+                        <TableCell className="font-medium">{ticket.date}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

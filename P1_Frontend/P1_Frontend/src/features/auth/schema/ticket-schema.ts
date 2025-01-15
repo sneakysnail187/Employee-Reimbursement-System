@@ -1,6 +1,11 @@
 import { z } from "zod";
 
 export const ticketSchema = z.object({
+  project: z
+    .string({
+      message: "Project is required",
+    })
+    .min(1, "Project is required"),
   description: z
     .string({
       message: "Description is required",
