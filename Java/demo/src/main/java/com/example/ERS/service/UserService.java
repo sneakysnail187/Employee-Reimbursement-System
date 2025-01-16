@@ -78,8 +78,8 @@ public class UserService {
             User user = new User(userOptional.get());
             User userToDelete = userOptional.get();
             System.out.println("check");
-            System.out.println(userToDelete);
-            userRepository.deleteById(userToDelete.getUserId()); //whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+            System.out.println(user);
+            userRepository.deleteUser(user.getUserId()); //whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
             userRepository.flush();
             return user;
         }

@@ -10,12 +10,15 @@ export function useDelete() {
             const resp = await axiosInstance.delete(`/user/${id}`, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
-        onSuccess: () => {
+        onSuccess: () => Promise.all([
             queryClient.invalidateQueries({
                 queryKey: ["user-list"],
-            });
-            toast.success("User deleted successfully");
-        },
+            }),
+            queryClient.invalidateQueries({
+                queryKey: ["all-ticket-list"],
+            }),
+            toast.success("User deleted successfully")
+        ]),
         onError: () => {
             toast.error("Failed to delete user");
         },

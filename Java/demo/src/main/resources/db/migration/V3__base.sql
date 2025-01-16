@@ -24,7 +24,7 @@ create table reimbursement (
     amount decimal(8,2),
     status varchar(255) not null,
     userId int not null,
-    timePosted timestamptz default current_timestamp,
     project varchar(255),
-    foreign key (userId) references users(userId)
+    submitted timestamptz default current_timestamp,
+    foreign key (userId) references users(userId) on delete cascade
 );

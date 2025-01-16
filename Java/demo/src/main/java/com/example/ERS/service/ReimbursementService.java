@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +59,7 @@ public class ReimbursementService {
 
         reimbursement.setUserID(userOptional.get());
         reimbursement.setStatus("Pending");
+        reimbursement.setSubmitted(OffsetDateTime.now());
 
         Reimbursement reimbursementSaved = reimbursementRepository.save(reimbursement);
         reimbursementRepository.flush();

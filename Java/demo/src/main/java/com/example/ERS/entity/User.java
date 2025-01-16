@@ -3,6 +3,8 @@ package com.example.ERS.entity;
 import java.util.List;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -42,6 +44,7 @@ public class User {
     private Role roleId;
 
     @OneToMany(mappedBy = "userID", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     @JsonManagedReference
     private List<Reimbursement> reimbursements;
 

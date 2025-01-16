@@ -12,8 +12,12 @@ import { useAllTicketList } from "../hooks/use-all-ticket-list";
 import StatusSelect from "./status-select";
 
 export function AllTicketList() {
-    const { data } = useAllTicketList();
+    const { data: dataFromHook } = useAllTicketList();
     const statusFn = useStatus();
+    const data = dataFromHook?.map((ticket) => ({
+        ...ticket,
+        submitted: ticket.submitted ? new Date(ticket.submitted).toLocaleString() : undefined,
+    }));
     console.log(data);
 
     return (
@@ -44,7 +48,7 @@ export function AllTicketList() {
                                 ticket.status = value;
                             }} />
                         </TableCell>
-                        <TableCell className="font-medium">{ticket.date}</TableCell>
+                        <TableCell className="font-medium">{ticket.submitted}</TableCell>
                     </TableRow>
                 ))}
             </TableBody>

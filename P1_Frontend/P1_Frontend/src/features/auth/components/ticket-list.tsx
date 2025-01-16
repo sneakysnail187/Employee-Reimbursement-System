@@ -7,10 +7,18 @@ import{
     TableRow,
 } from "@/components/ui/table"
 import { useTicketList } from "../hooks/use-ticket-list";
+import React, { useEffect } from "react";
 
 export function TicketList() {
-    const { data } = useTicketList();
-//add date/time of submission and project name,  maybe date of approval
+    const { data: dataFromHook } = useTicketList();
+    const data = dataFromHook?.map((ticket) => ({
+        ...ticket,
+        submitted: ticket.submitted ? new Date(ticket.submitted).toLocaleString() : undefined,
+    }));
+
+    
+    //consider only letting managers define project names and give employees a dropdown, i think this means a second table
+    // maybe add date of approval/rejection
     return (
             <Table>
                 <TableHeader>
@@ -32,7 +40,7 @@ export function TicketList() {
                             <TableCell className="font-medium">{ticket.project}</TableCell>
                             <TableCell className="font-medium">{ticket.description}</TableCell>
                             <TableCell className="font-medium">{ticket.status}</TableCell>
-                            <TableCell className="font-medium">{ticket.date}</TableCell>
+                            <TableCell className="font-medium">{ticket.submitted}</TableCell>
                             
                         </TableRow>
                     ))}
