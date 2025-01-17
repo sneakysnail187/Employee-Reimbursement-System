@@ -59,6 +59,17 @@ public class UserService {
         return null;
     }
 
+    public String logoutUser(String token) throws JsonProcessingException {
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(token));
+
+        if(userOptional.isPresent() ) {
+            User user = userOptional.get();
+            String jwt = jwtService.generateToken(user); //make a blacklist table with unused tokens that haven't expired
+            return jwt; //json this or in controller
+        }
+        return null;
+    }
+
     public List<User> getAllUsers(String token) {
         Role role = jwtService.getRoleFromToken(token);
 
@@ -76,10 +87,7 @@ public class UserService {
         
         if(userOptional.isPresent() && role.getRole().equals("Manager")) {
             User user = new User(userOptional.get());
-            User userToDelete = userOptional.get();
-            System.out.println("check");
-            System.out.println(user);
-            userRepository.deleteUser(user.getUserId()); //whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
+            userRepository.deleteUser(user.getUserId()); 
             userRepository.flush();
             return user;
         }

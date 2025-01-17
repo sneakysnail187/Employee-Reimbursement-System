@@ -2,7 +2,6 @@ package com.example.ERS.service;
 
 import io.jsonwebtoken.Claims; 
 import io.jsonwebtoken.Jwts; 
-import io.jsonwebtoken.SignatureAlgorithm; 
 import io.jsonwebtoken.io.Decoders; 
 import io.jsonwebtoken.security.Keys;
 
@@ -50,10 +49,10 @@ public class JwtService {
     }
 
     /**
-     * Decodes the given JWT token and retrieves the subject (email) from it.
+     * Decodes the given JWT token and retrieves the subject (user) from it.
      *
      * @param token the JWT token to decode
-     * @return the subject (email) contained in the token
+     * @return the subject (user) contained in the token
      * @throws io.jsonwebtoken.JwtException if the token is invalid or expired
      */
     public User decodeToken(String token) {
@@ -91,8 +90,15 @@ public class JwtService {
         .getBody()
         .get("role", String.class));
     }
-    
-    //dtos principal(returned to user), login request, reimbursement request
+
+    public Date getExpirationDateFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+    }
 
     public Key getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);

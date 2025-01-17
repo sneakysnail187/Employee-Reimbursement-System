@@ -4,8 +4,7 @@ import { useRouter } from "@tanstack/react-router";
 
 interface User {
   username: string;
-  role: string;
-  fullName: string;
+  firstName: string;
 }
 
 export function useAuth(): UseQueryResult<User> {
@@ -15,7 +14,7 @@ export function useAuth(): UseQueryResult<User> {
     queryKey: ["auth"],
     queryFn: async () => {
       try {
-        const resp = await axiosInstance.get("/users/reimbursements");//check where to go instead
+        const resp = await axiosInstance.get("/users/reimbursements");//get user info
         return resp.data;
       } catch (e) {
         console.error(e);
