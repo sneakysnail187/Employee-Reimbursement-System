@@ -12,7 +12,7 @@ export function UserAvatar() {
     <Avatar>
       <AvatarFallback>
         {//auth.email.charAt(0).toUpperCase() +
-          //auth.email.charAt(1).toUpperCase()}
+          auth.fullName.charAt(1).toUpperCase()
         }
       </AvatarFallback>
     </Avatar>

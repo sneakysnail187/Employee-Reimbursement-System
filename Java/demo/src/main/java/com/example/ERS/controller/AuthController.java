@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
 
 import com.example.ERS.dto.Request.LoginRequest;
+import com.example.ERS.dto.response.UserInfoResponse;
 import com.example.ERS.entity.User;
 import com.example.ERS.service.ReimbursementService;
 import com.example.ERS.service.UserService;
@@ -25,6 +26,17 @@ public class AuthController {
     @Autowired
     @Lazy
     JwtService jwtService;
+
+    @GetMapping("/auth/me")
+    public ResponseEntity userDetails(@RequestHeader(name="Authorization") String token) {
+
+        Optional<User> userOptional = Optional.ofNullable(jwtService.decodeToken(token));
+        if(userOptional.isPresent()) {
+            UserInfoResponse userInfo = new UserInfoResponse(userOptional.get().getUsername(), userOptional.get().getFirstName());
+            return ResponseEntity.status(200).body(userInfo);
+        }
+        return ResponseEntity.status(409).body(null);
+    }
 
     @PostMapping("/auth/register")
     public ResponseEntity registerUser(@RequestBody User user) {

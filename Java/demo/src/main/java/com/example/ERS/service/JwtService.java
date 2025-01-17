@@ -91,6 +91,15 @@ public class JwtService {
         .getBody()
         .get("role", String.class));
     }
+
+    public Date getExpirationDateFromToken(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+    }
     
     //dtos principal(returned to user), login request, reimbursement request
 
