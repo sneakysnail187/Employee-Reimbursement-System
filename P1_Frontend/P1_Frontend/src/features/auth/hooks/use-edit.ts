@@ -11,7 +11,6 @@ export function useEdit() {
     return useMutation({
         mutationFn: async ({reimbId, description, amount}: EditSchema) => {
             const resp = await axiosInstance.patch(`/reimbursement/edit/${reimbId}`,{description, amount}, {headers: {'Authorization': localStorage.getItem("token")}});
-            console.log(resp);
             return resp.data;
         },
         onSuccess: () => {

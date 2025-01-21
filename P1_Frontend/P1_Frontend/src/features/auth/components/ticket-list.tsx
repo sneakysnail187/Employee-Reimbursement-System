@@ -18,7 +18,11 @@ export function TicketList() {
 
     
     //consider only letting managers define project names and give employees a dropdown, i think this means a second table
-    // maybe add date of approval/rejection
+    if(dataFromHook?.length == undefined) {
+        return (
+            <div className="flex justify-center items-center h-screen">No tickets found</div>
+        )
+    }
     return (
             <Table>
                 <TableHeader>

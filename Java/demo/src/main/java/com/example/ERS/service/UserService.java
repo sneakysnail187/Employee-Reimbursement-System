@@ -55,17 +55,17 @@ public class UserService {
             User user = userOptional.get();
             String jwt = jwtService.generateToken(user); //this call doesnt work
             return jwt; //json this or in controller
-        }
+       }
         return null;
     }
 
     public String logoutUser(String token) throws JsonProcessingException {
-        Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(token));
-
+        Optional<User> userOptional = Optional.ofNullable(jwtService.decodeToken(token));
+        //recieve token to blacklist
         if(userOptional.isPresent() ) {
             User user = userOptional.get();
-            String jwt = jwtService.generateToken(user); //make a blacklist table with unused tokens that haven't expired
-            return jwt; //json this or in controller
+        //make a blacklist table with unused tokens that haven't expired
+            return null; //json this or in controller
         }
         return null;
     }

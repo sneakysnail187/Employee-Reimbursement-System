@@ -11,6 +11,9 @@ function Index() {
 
   return (
     <div>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
+          <h1 className="text-2xl font-bold mb-4">Employee Reimbursement System</h1>
+      </div>
       <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>
         <Card className="w-[400px]">
           <CardHeader>

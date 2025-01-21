@@ -10,7 +10,16 @@ import {
   import { UserAvatar } from "./user-avatar";
   
   export function UserDropdown() {
-    const { mutate: logout } = useLogout();
+    const logoutFn = useLogout();
+    const token = localStorage.getItem("token") as string | null;
+
+    const logout = async () => {
+      if (token) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("role");
+        logoutFn.mutate(token);
+      }
+    };
   
     return (
       <DropdownMenu>

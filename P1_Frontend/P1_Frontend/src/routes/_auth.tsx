@@ -7,14 +7,14 @@ export const Route = createFileRoute('/_auth')({
 })
 
 function RouteComponent() {
-    const { data: auth } = useAuth()
-    const router = useRouter()
+    //const { data: auth } = useAuth()
+   // const router = useRouter()
 
-    useEffect(() => {
-        if (auth) {
-            router.navigate({ to: "/tickets/userTickets" })
-        }
-    }, [auth])
+   // useEffect(() => {
+    //    if (auth) {
+   //         router.navigate({ to: "/tickets/userTickets" })
+   //     }
+  //  }, [auth])
 
   return(   
         <div className = "flex justify-center items-center h-screen">
