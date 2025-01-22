@@ -25,5 +25,5 @@ public class RefreshToken {
 
     private String token;
 
-    private Date expiryDate;
+    private Date expiry_Date;
 }

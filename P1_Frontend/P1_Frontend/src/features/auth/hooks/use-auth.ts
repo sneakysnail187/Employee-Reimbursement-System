@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios-config";
+import { protectedInstance } from "@/lib/axios-config";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export function useAuth(): UseQueryResult<any> {
@@ -7,7 +7,7 @@ export function useAuth(): UseQueryResult<any> {
     queryKey: ["auth"],
     queryFn: async () => {
       try {
-        const resp = await axiosInstance.get("/auth/me", {headers: {'Authorization': localStorage.getItem("token")}});
+        const resp = await protectedInstance.get("/auth/me");
         return resp.data;
       } catch (e) {
         console.error(e);

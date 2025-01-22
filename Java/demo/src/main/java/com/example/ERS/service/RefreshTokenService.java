@@ -38,7 +38,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = new RefreshToken();
 
         refreshToken.setUser(userRepository.findById(userId).get());
-        refreshToken.setExpiryDate(new Date(System.currentTimeMillis() + refreshTokenExpirationMs));
+        refreshToken.setExpiry_Date(new Date(System.currentTimeMillis() + refreshTokenExpirationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
 
         refreshToken = refreshTokenRepository.save(refreshToken);
@@ -48,7 +48,7 @@ public class RefreshTokenService {
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
-        if (token.getExpiryDate().before(new Date(System.currentTimeMillis()))) {
+        if (token.getExpiry_Date().before(new Date(System.currentTimeMillis()))) {
             refreshTokenRepository.delete(token);
             throw new RuntimeException("Refresh token " + token.getToken() + " is expired. Make a new sign-in request!");
         }

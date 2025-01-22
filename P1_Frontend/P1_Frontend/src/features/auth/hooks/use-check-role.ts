@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios-config";
+import { protectedInstance } from "@/lib/axios-config";
 import { useQuery } from "@tanstack/react-query";
 
 
@@ -8,7 +8,7 @@ export function useCheckRole(): any {
     queryKey: ["role"],
     queryFn: async () => {
       try {
-        const resp = await axiosInstance.get("/role", {headers: {'Authorization': localStorage.getItem("token")}});//check where to go instead
+        const resp = await protectedInstance.get("/role");//check where to go instead
         return resp.data.role as string;
       } catch (e) {
         console.error(e);

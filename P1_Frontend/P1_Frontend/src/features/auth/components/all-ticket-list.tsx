@@ -18,7 +18,6 @@ export function AllTicketList() {
         ...ticket,
         submitted: ticket.submitted ? new Date(ticket.submitted).toLocaleString() : undefined,
     }));
-    console.log(data);
 
     return (
         <Table>

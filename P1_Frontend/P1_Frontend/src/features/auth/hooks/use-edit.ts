@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios-config";
+import { protectedInstance } from "@/lib/axios-config";
 import { toast } from "sonner";
 import { EditSchema } from "../schema/edit-schema";
 import { useRouter } from "@tanstack/react-router";
@@ -10,7 +10,7 @@ export function useEdit() {
 
     return useMutation({
         mutationFn: async ({reimbId, description, amount}: EditSchema) => {
-            const resp = await axiosInstance.patch(`/reimbursement/edit/${reimbId}`,{description, amount}, {headers: {'Authorization': localStorage.getItem("token")}});
+            const resp = await protectedInstance.patch(`/reimbursement/edit/${reimbId}`,{description, amount});
             return resp.data;
         },
         onSuccess: () => {

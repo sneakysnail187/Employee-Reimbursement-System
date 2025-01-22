@@ -2,6 +2,7 @@ drop table if exists roles cascade;
 drop table if exists users cascade;
 drop table if exists reimbursement cascade;
 drop table if exists refresh_token cascade;
+drop table if exists tokenblacklist cascade;
 
 create table roles (
     roleId serial primary key,

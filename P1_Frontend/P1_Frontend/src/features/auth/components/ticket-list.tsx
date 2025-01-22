@@ -7,7 +7,6 @@ import{
     TableRow,
 } from "@/components/ui/table"
 import { useTicketList } from "../hooks/use-ticket-list";
-import React, { useEffect } from "react";
 
 export function TicketList() {
     const { data: dataFromHook } = useTicketList();
@@ -17,7 +16,7 @@ export function TicketList() {
     }));
 
     
-    //consider only letting managers define project names and give employees a dropdown, i think this means a second table
+    //consider only letting managers name projects and give employees a dropdown, i think this means a second table
     if(dataFromHook?.length == undefined) {
         return (
             <div className="flex justify-center items-center h-screen">No tickets found</div>

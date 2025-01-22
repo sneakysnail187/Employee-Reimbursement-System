@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance } from "@/lib/axios-config";
+import { protectedInstance } from "@/lib/axios-config";
 import { toast } from "sonner";
 
 export function useDelete() {
@@ -7,7 +7,7 @@ export function useDelete() {
 
     return useMutation({
         mutationFn: async (id: number) => {
-            const resp = await axiosInstance.delete(`/user/${id}`, {headers: {'Authorization': localStorage.getItem("token")}});
+            const resp = await protectedInstance.delete(`/user/${id}`);
             return resp.data;
         },
         onSuccess: () => Promise.all([
