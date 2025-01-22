@@ -13,9 +13,10 @@ export function useLogin() {
     mutationFn: async (values: LoginSchema) => {
       const resp = await axiosInstance.post("/auth/login", values);
       const { data } = resp;
-      const { role, ...decoded } = jwtDecode(data) as { role: string };
+      const { role, ...decoded } = jwtDecode(data.token) as { role: string };
       localStorage.setItem("role", role);
-      localStorage.setItem("token", resp.data);
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("refresh", data.refreshToken);
       return { ...decoded, role };
     },
     onSuccess: () => {

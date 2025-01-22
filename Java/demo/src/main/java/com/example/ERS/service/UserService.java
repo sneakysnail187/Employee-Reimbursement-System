@@ -1,7 +1,6 @@
 package com.example.ERS.service;
 
 import com.example.ERS.entity.User;
-import com.example.ERS.entity.Reimbursement;
 import com.example.ERS.entity.Role;
 import com.example.ERS.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Optional;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -53,19 +51,19 @@ public class UserService {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
         if(userOptional.isPresent() && BCrypt.checkpw(password, userOptional.get().getPassword())) {
             User user = userOptional.get();
-            String jwt = jwtService.generateToken(user); //this call doesnt work
-            return jwt; //json this or in controller
+            String jwt = jwtService.generateToken(user);
+            return jwt;
        }
         return null;
     }
 
-    public String logoutUser(String token) throws JsonProcessingException {
+    public Integer logoutUser(String token) throws JsonProcessingException {
         Optional<User> userOptional = Optional.ofNullable(jwtService.decodeToken(token));
-        //recieve token to blacklist
+
         if(userOptional.isPresent() ) {
             User user = userOptional.get();
         //make a blacklist table with unused tokens that haven't expired
-            return null; //json this or in controller
+            return user.getUserId(); 
         }
         return null;
     }

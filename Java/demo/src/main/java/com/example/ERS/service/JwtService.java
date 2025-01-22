@@ -33,7 +33,7 @@ public class JwtService {
      * @return a JWT token as a String
      * @throws JsonProcessingException 
      */
-    public String generateToken(User user) throws JsonProcessingException { 
+    public String generateToken(User user){ 
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getUserId());
         claims.put("username", user.getUsername());

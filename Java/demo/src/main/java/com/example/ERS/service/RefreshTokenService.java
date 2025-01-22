@@ -13,6 +13,7 @@ import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -22,9 +23,11 @@ public class RefreshTokenService {
     private long refreshTokenExpirationMs;
 
     @Autowired
+    @Lazy
     private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
+    @Lazy
     private UserRepository userRepository;
 
     public Optional<RefreshToken> findByToken(String token) {
@@ -33,17 +36,21 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(int userId) {
         RefreshToken refreshToken = new RefreshToken();
+
         refreshToken.setUser(userRepository.findById(userId).get());
         refreshToken.setExpiryDate(new Date(System.currentTimeMillis() + refreshTokenExpirationMs));
         refreshToken.setToken(UUID.randomUUID().toString());
+
         refreshToken = refreshTokenRepository.save(refreshToken);
+
+        System.out.println("Refresh token created");
         return refreshToken;
     }
 
     public RefreshToken verifyExpiration(RefreshToken token) {
         if (token.getExpiryDate().before(new Date(System.currentTimeMillis()))) {
             refreshTokenRepository.delete(token);
-            return null;
+            throw new RuntimeException("Refresh token " + token.getToken() + " is expired. Make a new sign-in request!");
         }
         return token;
     }
