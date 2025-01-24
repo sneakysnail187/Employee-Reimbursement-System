@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { protectedInstance } from "@/lib/axios-config";
+import { protectedInstance , addInterceptors} from "@/lib/axios-config";
 import { toast } from "sonner";
 
 interface RoleTarget {
@@ -11,7 +11,8 @@ export function useRole() {
 
     return useMutation({
         mutationFn: async ({ userId }: RoleTarget) => {
-            const resp = await protectedInstance.patch(`/user/role/${userId}`);//make backend endpoint
+            addInterceptors(protectedInstance);
+            const resp = await protectedInstance.patch(`/user/role/${userId}`);
             return resp.data;
         },
         onSuccess: () => {

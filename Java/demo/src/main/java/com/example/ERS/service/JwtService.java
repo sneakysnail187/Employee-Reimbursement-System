@@ -41,6 +41,8 @@ public class JwtService {
         claims.put("firstName", user.getFirstName());
         claims.put("lastName", user.getLastName());
         claims.put("role", user.getRoleId().getRole()); 
+        System.out.println(new Date(System.currentTimeMillis()));
+        System.out.println(new Date(System.currentTimeMillis() + 1000 * 60 * 15));
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

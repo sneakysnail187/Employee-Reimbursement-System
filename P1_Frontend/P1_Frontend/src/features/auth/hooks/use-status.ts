@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { protectedInstance } from "@/lib/axios-config";
+import {protectedInstance, addInterceptors} from "@/lib/axios-config";
 import { toast } from "sonner";
 
 interface StatusSchema {
@@ -12,6 +12,7 @@ export function useStatus() {
 
     return useMutation({
         mutationFn: async ({reimbId, status}: StatusSchema) => {
+            addInterceptors(protectedInstance);
             const resp = await protectedInstance.patch(`/reimbursement/status/${reimbId}`,{status});
             return resp.data;
         },

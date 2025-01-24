@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class RefreshTokenService {
+public class RefreshTokenService {//how do I determine when to refresh? Look into axios interceptors
 
     @Value("${jwt.refreshTokenExpirationMs}")
     private long refreshTokenExpirationMs;

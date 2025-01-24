@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { TicketSchema } from "../schema/ticket-schema";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { protectedInstance } from "@/lib/axios-config";
+import {protectedInstance, addInterceptors} from "@/lib/axios-config";
 import { useRouter } from "@tanstack/react-router";
 
 export function useTicket() {
@@ -10,6 +10,7 @@ export function useTicket() {
 
   return useMutation({
     mutationFn: async (values: TicketSchema) => {
+      addInterceptors(protectedInstance);
       const resp = await protectedInstance.post("/reimbursement", values);
       return resp.data;
     },

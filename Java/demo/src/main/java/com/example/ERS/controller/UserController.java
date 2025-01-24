@@ -38,7 +38,7 @@ public class UserController {
             List<UserListResponse> responses = new ArrayList<>(users.stream().map(UserListResponse::new).collect(Collectors.toList()));
             return ResponseEntity.status(200).body(responses);
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @DeleteMapping("/user/{id}")
@@ -49,6 +49,6 @@ public class UserController {
         if(userOptional.isPresent()) {
             return ResponseEntity.status(200).body(userOptional.get().toString());
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     } //pass in a json not a string
 }

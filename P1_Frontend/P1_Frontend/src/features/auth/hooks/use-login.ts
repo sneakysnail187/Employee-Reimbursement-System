@@ -15,7 +15,7 @@ export function useLogin() {
       const { data } = resp;
       const { role, ...decoded } = jwtDecode(data.token) as { role: string };
       localStorage.setItem("role", role);
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.token);//eventually store these in cookies
       localStorage.setItem("refresh", data.refreshToken);
       return { ...decoded, role };
     },

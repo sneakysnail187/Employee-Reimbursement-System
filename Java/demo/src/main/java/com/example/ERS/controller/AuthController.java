@@ -42,7 +42,7 @@ public class AuthController {
             UserInfoResponse userInfo = new UserInfoResponse(userOptional.get().getUsername(), userOptional.get().getFirstName());
             return ResponseEntity.status(200).body(userInfo);
         }
-        return ResponseEntity.status(409).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @PostMapping("/auth/register")
@@ -65,7 +65,7 @@ public class AuthController {
             JWTResponse jwtResponse = new JWTResponse(jwt, refreshToken.getToken());
             return ResponseEntity.status(200).body(jwtResponse);
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     } 
 
     @PostMapping("/auth/logout")

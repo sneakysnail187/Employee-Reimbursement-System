@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { protectedInstance } from "@/lib/axios-config";
+import {protectedInstance, addInterceptors} from "@/lib/axios-config";
 import { toast } from "sonner";
 
 export function useDelete() {
@@ -7,6 +7,7 @@ export function useDelete() {
 
     return useMutation({
         mutationFn: async (id: number) => {
+            addInterceptors(protectedInstance);
             const resp = await protectedInstance.delete(`/user/${id}`);
             return resp.data;
         },

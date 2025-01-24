@@ -1,4 +1,4 @@
-import { protectedInstance } from "@/lib/axios-config";
+import {protectedInstance , addInterceptors} from "@/lib/axios-config";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 
 export function useAuth(): UseQueryResult<any> {
@@ -7,6 +7,7 @@ export function useAuth(): UseQueryResult<any> {
     queryKey: ["auth"],
     queryFn: async () => {
       try {
+        addInterceptors(protectedInstance);
         const resp = await protectedInstance.get("/auth/me");
         return resp.data;
       } catch (e) {

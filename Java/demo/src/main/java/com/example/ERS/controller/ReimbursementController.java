@@ -36,7 +36,7 @@ public class ReimbursementController {
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @Transactional
@@ -48,7 +48,7 @@ public class ReimbursementController {
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @Transactional
@@ -58,7 +58,7 @@ public class ReimbursementController {
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }//find a way to pull data from edit target    
 
     @GetMapping("/users/reimbursements")
@@ -68,7 +68,7 @@ public class ReimbursementController {
         if (!reimbursements.isEmpty()) { 
             return ResponseEntity.status(200).body(reimbursements);
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @GetMapping("/reimbursements/all")
@@ -79,7 +79,7 @@ public class ReimbursementController {
             List<AllReimbursementResponse> responses = new ArrayList<>(reimbursementsOptional.stream().map(AllReimbursementResponse::new).collect(Collectors.toList()));
             return ResponseEntity.status(200).body(responses);
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @GetMapping("/users/reimbursements?status=pending")
@@ -91,7 +91,7 @@ public class ReimbursementController {
         if(reimbursementsOptional != null) { //find a better way to do this
             return ResponseEntity.status(200).body(reimbursementsOptional.toString());
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
     @GetMapping("/reimbursements?status=pending")//take the status from uri param later
@@ -102,7 +102,7 @@ public class ReimbursementController {
         if(reimbursementsOptional != null) { //find a better way to do this
             return ResponseEntity.status(200).body(reimbursementsOptional.toString());
         }
-        return ResponseEntity.status(401).body(null);
+        return ResponseEntity.status(403).body(null);
     }
 
 }
