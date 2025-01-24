@@ -1,8 +1,12 @@
 package com.example.ERS.service;
 
-import io.jsonwebtoken.Claims; 
-import io.jsonwebtoken.Jwts; 
-import io.jsonwebtoken.SignatureAlgorithm; 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders; 
 import io.jsonwebtoken.security.Keys;
 
@@ -42,11 +46,11 @@ public class JwtService {
         claims.put("lastName", user.getLastName());
         claims.put("role", user.getRoleId().getRole()); 
         System.out.println(new Date(System.currentTimeMillis()));
-        System.out.println(new Date(System.currentTimeMillis() + 1000 * 60 * 15));
+        System.out.println(new Date(System.currentTimeMillis() + 1000 * 60 * 1));
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 15)) // 15 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1)) // 1 minutes
                 .signWith(getSigningKey())
                 .compact();
     }
@@ -74,6 +78,24 @@ public class JwtService {
         user.setRoleId(new Role(claims.get("role", String.class)));
 
         return user;
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+            return true;
+        } catch (SecurityException ex) {
+            // Invalid signature/claims
+        } catch (ExpiredJwtException ex) {
+            // Expired token
+        } catch (UnsupportedJwtException ex) {
+            // Unsupported JWT token
+        } catch (MalformedJwtException ex) {
+            // Malformed JWT token
+        } catch (IllegalArgumentException ex) {
+            // JWT token is empty
+        }
+        return false;
     }
     
     public Integer getIdFromToken(String token) {

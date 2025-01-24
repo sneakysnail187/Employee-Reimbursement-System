@@ -32,6 +32,7 @@ public class UserController {
 
     @GetMapping("/user")
     public ResponseEntity getUsers(@RequestHeader(name="Authorization") String token) {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
         List<User> users = userService.getAllUsers(token);
 
         if(users != null) {
@@ -43,7 +44,7 @@ public class UserController {
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity deleteUser(@RequestHeader(name="Authorization") String token, @PathVariable Integer id) {
-
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
         Optional<User> userOptional = Optional.ofNullable(userService.deleteUser(id, token));
 
         if(userOptional.isPresent()) {

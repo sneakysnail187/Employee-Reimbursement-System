@@ -9,7 +9,7 @@ export function useLogout() {
 
   return useMutation({
     mutationFn: async (token : string) => {
-      const resp = await axiosInstance.post("/auth/logout", {token});
+      const resp = await axiosInstance.post("/auth/logout", {token}, {headers: {'Authorization': `${token}`}});
       return resp.data;
     },
     onSuccess: () => {

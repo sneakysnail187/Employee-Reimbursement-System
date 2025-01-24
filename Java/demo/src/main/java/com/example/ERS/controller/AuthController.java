@@ -36,6 +36,7 @@ public class AuthController {
 
     @GetMapping("/auth/me")
     public ResponseEntity userDetails(@RequestHeader(name="Authorization") String token) {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
 
         Optional<User> userOptional = Optional.ofNullable(jwtService.decodeToken(token));
         if(userOptional.isPresent()) {
@@ -70,6 +71,8 @@ public class AuthController {
 
     @PostMapping("/auth/logout")
     public ResponseEntity logoutUser(@RequestHeader(name="Authorization") String token) throws JsonProcessingException {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
+
         Optional<Integer> userOptional = Optional.ofNullable(userService.logoutUser(token)); 
 
         if(userOptional.isPresent()) {
@@ -81,6 +84,8 @@ public class AuthController {
 
     @PostMapping("/auth/refresh")//for when a jwt token expires but the user hasn't logged out
     public ResponseEntity refreshToken(@RequestHeader(name="Authorization") String token, @RequestBody TokenRefreshRequest refreshToken) {
+        System.out.println(token);
+        
         String refreshTokenString = refreshToken.getRefreshToken();
         
         return refreshTokenService.findByToken(refreshTokenString)

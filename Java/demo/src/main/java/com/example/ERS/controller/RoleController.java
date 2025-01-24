@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.context.annotation.Lazy;
 
 import com.example.ERS.entity.Role;
+import com.example.ERS.service.JwtService;
 import com.example.ERS.service.RoleService;
 
 @RestController
@@ -15,6 +16,10 @@ public class RoleController {
     @Lazy
     private RoleService roleService;
 
+    @Autowired
+    @Lazy
+    JwtService jwtService;
+
     @PostMapping("/role")
     public ResponseEntity<Role> createRole(@RequestBody Role role) {
         Role newRole = roleService.createRole(role);
@@ -23,7 +28,8 @@ public class RoleController {
     }
 
     @GetMapping("/role")
-    public ResponseEntity<Role> getRole(@RequestHeader(name="Authorization") String token) {
+    public ResponseEntity getRole(@RequestHeader(name="Authorization") String token) {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
         Role role = roleService.getRole(token);
         if(role == null) return ResponseEntity.badRequest().build();
         return ResponseEntity.ok(role);

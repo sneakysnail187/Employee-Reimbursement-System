@@ -25,12 +25,13 @@ public class ReimbursementController {
     private ReimbursementService reimbursementService;
 
     @Autowired
-    JwtService jwtService;
+    private JwtService jwtService;
     
     @Transactional
     @PostMapping("/reimbursement")
     public ResponseEntity createTicket(@RequestHeader(name="Authorization") String token, @RequestBody Reimbursement ticket) {
-
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
+        
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.createReimbursement(token, ticket));
 
         if(reimbursementOptional.isPresent()) { 
@@ -42,7 +43,8 @@ public class ReimbursementController {
     @Transactional
     @PatchMapping("/reimbursement/status/{id}")
     public ResponseEntity editTicketStatus(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String status) throws JsonMappingException, JsonProcessingException {
-
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
+        
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursementStatus(token, id, status));
 
         if(reimbursementOptional.isPresent()) { 
@@ -54,6 +56,8 @@ public class ReimbursementController {
     @Transactional
     @PatchMapping("/reimbursement/edit/{id}")
     public ResponseEntity editTicket(@RequestHeader(name="Authorization") String token, @PathVariable Integer id , @RequestBody String ticket) throws JsonMappingException, JsonProcessingException {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
+        
         Optional<Reimbursement> reimbursementOptional = Optional.ofNullable(reimbursementService.updateReimbursement(token, id, ticket));
         if(reimbursementOptional.isPresent()) { 
             return ResponseEntity.status(200).body(reimbursementOptional.get());
@@ -63,6 +67,8 @@ public class ReimbursementController {
 
     @GetMapping("/users/reimbursements")
     public ResponseEntity getUserTickets(@RequestHeader(name="Authorization") String token) {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
+        
         List<Reimbursement> reimbursements = reimbursementService.getUserReimbursements(token);
 
         if (!reimbursements.isEmpty()) { 
@@ -73,6 +79,8 @@ public class ReimbursementController {
 
     @GetMapping("/reimbursements/all")
     public ResponseEntity getAllTickets(@RequestHeader(name="Authorization") String token) {
+        if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
+        
         List<Reimbursement> reimbursementsOptional = reimbursementService.getAllReimbursements(token);
 
         if(!reimbursementsOptional.isEmpty()) { //find a better way to do this
@@ -82,7 +90,7 @@ public class ReimbursementController {
         return ResponseEntity.status(403).body(null);
     }
 
-    @GetMapping("/users/reimbursements?status=pending")
+    @GetMapping("/users/reimbursements?status=pending")//just auto group by status
     public ResponseEntity getUserPendingTickets(@RequestHeader(name="Authorization") String token) {
 
         int id = jwtService.getIdFromToken(token);

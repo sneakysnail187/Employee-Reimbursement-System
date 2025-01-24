@@ -12,7 +12,7 @@ export function useRole() {
     return useMutation({
         mutationFn: async ({ userId }: RoleTarget) => {
             addInterceptors(protectedInstance);
-            const resp = await protectedInstance.patch(`/user/role/${userId}`);
+            const resp = await protectedInstance.patch(`/user/role/${userId}`, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
         onSuccess: () => {

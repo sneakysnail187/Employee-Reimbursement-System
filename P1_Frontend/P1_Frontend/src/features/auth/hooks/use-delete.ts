@@ -8,7 +8,7 @@ export function useDelete() {
     return useMutation({
         mutationFn: async (id: number) => {
             addInterceptors(protectedInstance);
-            const resp = await protectedInstance.delete(`/user/${id}`);
+            const resp = await protectedInstance.delete(`/user/${id}`, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
         onSuccess: () => Promise.all([

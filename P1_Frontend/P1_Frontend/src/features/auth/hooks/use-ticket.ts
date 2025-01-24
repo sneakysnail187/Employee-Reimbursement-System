@@ -11,7 +11,7 @@ export function useTicket() {
   return useMutation({
     mutationFn: async (values: TicketSchema) => {
       addInterceptors(protectedInstance);
-      const resp = await protectedInstance.post("/reimbursement", values);
+      const resp = await protectedInstance.post("/reimbursement", values, {headers: {'Authorization': localStorage.getItem("token")}});
       return resp.data;
     },
     onSuccess: () => {

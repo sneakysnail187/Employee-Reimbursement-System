@@ -1,5 +1,5 @@
 import axios from "axios";
-import isJwtTokenExpired, { decode } from 'jwt-check-expiry';
+import isJwtTokenExpired from 'jwt-check-expiry';
 //add different instances for auth and protected
 export const axiosInstance = axios.create({
     baseURL: "http://localhost:8080",
@@ -11,8 +11,7 @@ export const axiosInstance = axios.create({
 export const protectedInstance = axios.create({
     baseURL: "http://localhost:8080",
     headers: {
-        "Content-Type": "application/json",
-        'Authorization': localStorage.getItem("token")
+        "Content-Type": "application/json"
     }
 })
 
@@ -27,7 +26,7 @@ export function addInterceptors(instance: any) {
                 initRequest._retry = true;
                 try {
                     const refreshToken = localStorage.getItem("refresh");
-                    const resp = await axios.post("/auth/refresh", { refreshToken });
+                    const resp = await instance.post("/auth/refresh", { refreshToken });
                     const { data } = resp.data;
                     localStorage.setItem("token", data.token);
                     initRequest.headers["Authorization"] = data.token;

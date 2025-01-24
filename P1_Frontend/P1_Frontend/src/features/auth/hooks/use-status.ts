@@ -13,7 +13,7 @@ export function useStatus() {
     return useMutation({
         mutationFn: async ({reimbId, status}: StatusSchema) => {
             addInterceptors(protectedInstance);
-            const resp = await protectedInstance.patch(`/reimbursement/status/${reimbId}`,{status});
+            const resp = await protectedInstance.patch(`/reimbursement/status/${reimbId}`,{status}, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
         

@@ -8,7 +8,7 @@ export function useAuth(): UseQueryResult<any> {
     queryFn: async () => {
       try {
         addInterceptors(protectedInstance);
-        const resp = await protectedInstance.get("/auth/me");
+        const resp = await protectedInstance.get("/auth/me", {headers: {'Authorization': localStorage.getItem("token")}});
         return resp.data;
       } catch (e) {
         console.error(e);
