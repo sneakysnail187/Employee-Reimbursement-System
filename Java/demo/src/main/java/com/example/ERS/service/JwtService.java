@@ -46,11 +46,11 @@ public class JwtService {
         claims.put("lastName", user.getLastName());
         claims.put("role", user.getRoleId().getRole()); 
         System.out.println(new Date(System.currentTimeMillis()));
-        System.out.println(new Date(System.currentTimeMillis() + 1000 * 60 * 1));
+        System.out.println(new Date(System.currentTimeMillis() + 1000 * 30));
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1)) // 1 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 30)) // 1 minutes
                 .signWith(getSigningKey())
                 .compact();
     }

@@ -6,7 +6,7 @@ export function useUserList(): UseQueryResult<any[]> {
         queryKey: ["user-list"],
         queryFn: async () => {
             try {
-                addInterceptors(protectedInstance);
+                //addInterceptors(protectedInstance);
                 const resp = await protectedInstance.get(`/user`, {headers: {'Authorization': localStorage.getItem("token")}});
                 return resp.data;
             } catch (error) {

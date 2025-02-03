@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios-config";
+import { protectedInstance } from "@/lib/axios-config";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useRouter } from "@tanstack/react-router";
@@ -6,10 +6,12 @@ import { useRouter } from "@tanstack/react-router";
 export function useLogout() {
   const queryClient = useQueryClient();
   const router = useRouter();
+  const token = localStorage.getItem("token") as string | null;
 
   return useMutation({
-    mutationFn: async (token : string) => {
-      const resp = await axiosInstance.post("/auth/logout", {token}, {headers: {'Authorization': `${token}`}});
+    mutationFn: async () => {
+      console.log(token); 
+      const resp = await protectedInstance.post("/auth/logout", {headers: {'Authorization': token}});
       return resp.data;
     },
     onSuccess: () => {

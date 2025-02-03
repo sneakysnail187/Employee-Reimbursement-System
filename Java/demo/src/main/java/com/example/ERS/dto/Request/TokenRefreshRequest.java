@@ -1,5 +1,8 @@
 package com.example.ERS.dto.Request;
 
+import lombok.ToString;
+
+@ToString
 public class TokenRefreshRequest {
 
     private String refreshToken;

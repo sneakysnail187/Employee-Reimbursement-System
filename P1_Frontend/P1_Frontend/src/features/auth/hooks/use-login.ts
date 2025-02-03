@@ -12,7 +12,9 @@ export function useLogin() {
   return useMutation({
     mutationFn: async (values: LoginSchema) => {
       const resp = await axiosInstance.post("/auth/login", values);
+      
       const { data } = resp;
+      console.log(data);
       const { role, ...decoded } = jwtDecode(data.token) as { role: string };
       localStorage.setItem("role", role);
       localStorage.setItem("token", data.token);//eventually store these in cookies

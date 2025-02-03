@@ -6,7 +6,7 @@ export function useTicketList(): UseQueryResult<any[]> {
         queryKey: ["ticket-list"],
         queryFn: async () => {
             try{
-                addInterceptors(protectedInstance);
+                //addInterceptors(protectedInstance);
                 const resp = await protectedInstance.get(`/users/reimbursements`, {headers: {'Authorization': localStorage.getItem("token")}});
                 return resp.data;
             } catch (e) {

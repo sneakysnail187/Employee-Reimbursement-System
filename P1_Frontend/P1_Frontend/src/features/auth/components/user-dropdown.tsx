@@ -15,9 +15,9 @@ import {
 
     const logout = async () => {
       if (token) {
+        logoutFn.mutate();
         localStorage.removeItem("token");
         localStorage.removeItem("role");
-        logoutFn.mutate(token);
       }
     };
   

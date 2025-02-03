@@ -2,7 +2,10 @@ package com.example.ERS.dto.response;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+@Getter
+@Setter
 public class TokenRefreshResponse {
     private String token;
     private String refreshToken;

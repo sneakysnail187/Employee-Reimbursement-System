@@ -10,7 +10,7 @@ export function useEdit() {
 
     return useMutation({
         mutationFn: async ({reimbId, description, amount}: EditSchema) => {
-            addInterceptors(protectedInstance);
+            //addInterceptors(protectedInstance);
             const resp = await protectedInstance.patch(`/reimbursement/edit/${reimbId}`,{description, amount}, {headers: {'Authorization': localStorage.getItem("token")}});
             return resp.data;
         },
