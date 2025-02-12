@@ -13,6 +13,17 @@ import {
 } from "@/components/ui/form";
 import { useRegister } from "../hooks/use-register";
 
+
+/**
+ * Component for user registration.
+ * 
+ * This component renders a form with fields for the user's first name, last name, username, password, and confirmation of password.
+ * It utilizes the Tanstack React Query `useRegister` hook to make a POST request to the "/auth/register" endpoint.
+ * If the submission is successful, the form is reset.
+ * If the submission fails, the error message is displayed below the submit button.
+ * 
+ * @returns The react component for user registration.
+ */
 export function RegisterForm() {
   const { mutate: register, isPending } = useRegister();
 

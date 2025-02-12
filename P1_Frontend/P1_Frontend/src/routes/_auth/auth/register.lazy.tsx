@@ -14,6 +14,14 @@ export const Route = createLazyFileRoute("/_auth/auth/register")({
   component: RouteComponent,
 });
 
+/**
+ * Component for the register route.
+ *
+ * This component renders a centered card with a RegisterForm inside of it.
+ * It also renders a footer with a link to the login route.
+ * 
+ * @returns {JSX.Element} The react component.
+ */
 function RouteComponent() {
   return (
     <div style = {{display: "flex", justifyContent: "center", alignItems: "center"}}>

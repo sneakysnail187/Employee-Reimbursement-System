@@ -12,6 +12,15 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 
+/**
+ * Component for displaying the list of users in the system.
+ * 
+ * This component renders a table of users with their ID, username, role, and full name. Each row also has a "Delete" button, which
+ * calls the `useDelete` hook when clicked. The role of each user can be changed by clicking on the current role and selecting a new one
+ * from the dropdown menu. The component also displays a toast message when a user is deleted.
+ * 
+ * @returns {JSX.Element} The react component.
+ */
 export function UserList() {
     const { data: users } = useUserList();
     const deleteFn  = useDelete();

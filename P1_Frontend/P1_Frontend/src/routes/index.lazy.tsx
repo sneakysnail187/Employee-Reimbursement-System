@@ -7,6 +7,15 @@ export const Route = createLazyFileRoute("/")({
   component: Index,
 });
 
+/**
+ * The Index component is the main component for the login page. It renders a
+ * centered card with a header, content, and footer. The header contains the
+ * title of the page, the content contains a LoginForm component, and the footer
+ * contains a link to register a new user.
+ *
+ * @returns {JSX.Element} The rendered component.
+ */
+
 function Index() {
 
   return (

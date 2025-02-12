@@ -17,6 +17,16 @@ export const Route = createFileRoute('/_protected')({
   component: RouteComponent,
 })
 
+/**
+ * RouteComponent is the main component for the protected routes. It renders a
+ * basic layout with a navbar at the top and a sidebar on the left. The content
+ * of the current route is rendered in the main area of the page.
+ * 
+ * If the user is not a manager, the sidebar is not displayed and the content
+ * of the current route is rendered directly in the main area of the page.
+ * 
+ * @returns {JSX.Element} The rendered component.
+ */
 function RouteComponent() {
     const { data: auth } = useCheckRole();
 

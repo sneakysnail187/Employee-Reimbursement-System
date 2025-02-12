@@ -8,6 +8,18 @@ import{
 } from "@/components/ui/table"
 import { useTicketList } from "../hooks/use-ticket-list";
 
+/**
+ * Component for displaying a list of tickets.
+ * 
+ * This component fetches ticket data using the `useTicketList` hook
+ * and renders it in a table format. Each ticket displays its ID, amount,
+ * project, description, status, and the date it was posted.
+ * 
+ * If no tickets are found, it displays a message indicating no tickets are available.
+ * 
+ * @returns {JSX.Element} The react component for displaying the ticket list.
+ */
+
 export function TicketList() {
     const { data: dataFromHook } = useTicketList();
     const data = dataFromHook?.map((ticket) => ({

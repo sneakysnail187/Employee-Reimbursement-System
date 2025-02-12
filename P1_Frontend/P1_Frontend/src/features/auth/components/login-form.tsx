@@ -12,10 +12,19 @@ import {
 import { loginSchema, LoginSchema } from "../schema/login-schema";
 import { useLogin } from "../hooks/use-login";
 
+/**
+ * Component for logging in.
+ * 
+ * This component renders a form with fields for the user's username and password.
+ * It utilizes the Tanstack React Query `useLogin` hook to make a POST request to the "/auth/login" endpoint.
+ * If the submission is successful, the user is logged in and the form is reset.
+ * If the submission fails, the error message is displayed below the submit button.
+ * 
+ * @returns The react component for logging in.
+ */
 export function LoginForm() {
   const { mutate: login, isPending } = useLogin();
 
-  //console.log("Tickets received: ",  data);
 
   // 1. Define your form.
   const form = useForm<LoginSchema>({

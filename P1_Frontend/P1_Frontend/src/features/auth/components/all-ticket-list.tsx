@@ -11,6 +11,19 @@ import { useStatus } from "../hooks/use-status";
 import { useAllTicketList } from "../hooks/use-all-ticket-list";
 import StatusSelect from "./status-select";
 
+/**
+ * Component for displaying the list of all tickets in the system.
+ * 
+ * This component fetches all ticket data using the `useAllTicketList` hook
+ * and renders it in a table format. Each ticket displays its ID, username,
+ * amount, project, description, status, and the date it was posted.
+ * 
+ * If no tickets are found, it displays a message indicating no tickets are available.
+ * 
+ * The status of each ticket can be updated by selecting a new status from the dropdown menu.
+ * 
+ * @returns {JSX.Element} The react component for displaying the all ticket list.
+ */
 export function AllTicketList() {
     const { data: dataFromHook } = useAllTicketList();
     const statusFn = useStatus();

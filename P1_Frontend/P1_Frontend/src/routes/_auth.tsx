@@ -6,6 +6,16 @@ export const Route = createFileRoute('/_auth')({
   component: RouteComponent,
 })
 
+/**
+ * Component for the _auth route.
+ *
+ * This component serves as a wrapper for the authentication routes,
+ * centering its contents vertically and horizontally on the screen.
+ * It renders an Outlet component to display any child routes.
+ *
+ * @returns {JSX.Element} The react component.
+ */
+
 function RouteComponent() {
     //const { data: auth } = useAuth()
    // const router = useRouter()

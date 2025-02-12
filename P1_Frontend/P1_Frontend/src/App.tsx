@@ -12,7 +12,6 @@ export default function App() {
             <Toaster />
             <LoginForm />
             <RegisterForm />
-            <TicketForm />
         </QueryClientProvider>
     );
 }

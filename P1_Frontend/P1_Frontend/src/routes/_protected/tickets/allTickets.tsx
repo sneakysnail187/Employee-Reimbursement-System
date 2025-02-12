@@ -9,6 +9,14 @@ export const Route = createFileRoute('/_protected/tickets/allTickets')({
   component: RouteComponent,
 },)
 
+  /**
+   * The RouteComponent is a React component that renders the allTickets page.
+   * The page displays a list of all tickets in the system, and provides a button
+   * to create a new ticket. The component also renders a modal for creating a
+   * new ticket, and handles the state for that modal.
+   *
+   * @returns {JSX.Element} The rendered component.
+   */
 function RouteComponent() {
   const [open, setOpen] = useState(false)
   

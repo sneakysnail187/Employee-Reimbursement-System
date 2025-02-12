@@ -15,8 +15,6 @@ import com.example.ERS.entity.User;
 import com.example.ERS.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-import io.micrometer.core.ipc.http.HttpSender.Response;
-
 import com.example.ERS.service.JwtService;
 import com.example.ERS.service.RefreshTokenService;
 import com.example.ERS.dto.response.JWTResponse;
@@ -73,13 +71,12 @@ public class AuthController {
     } 
 
     @PostMapping("/auth/logout")
-    public ResponseEntity logoutUser(@RequestHeader(name="Authorization") String token) throws JsonProcessingException {
+    public ResponseEntity logoutUser(@RequestHeader(name="Authorization") String token, @RequestBody String deadtoken) throws JsonProcessingException {
         if(!jwtService.validateToken(token)) return ResponseEntity.status(401).body("Bad token");
 
         Optional<Integer> userOptional = Optional.ofNullable(userService.logoutUser(token)); 
 
         if(userOptional.isPresent()) {
-            System.out.println("logged out");
             refreshTokenService.deleteByUserId(userOptional.get());
             return ResponseEntity.status(200).body("Logged out");
         }
@@ -94,9 +91,7 @@ public class AuthController {
         RefreshToken refreshTokenObject = refreshTokenService.findByToken(refreshTokenString).orElseThrow(() -> new RuntimeException("Refresh token " + refreshToken.getRefreshToken() + " is not in database!"));
         if(refreshTokenService.verifyExpiration(refreshTokenObject) != null){
             String newToken = jwtService.generateToken(refreshTokenObject.getUser());
-            System.out.println("new jwt token created");
             TokenRefreshResponse tokenRefreshResponse = new TokenRefreshResponse(newToken, refreshTokenString);
-            System.out.println("Response: " + ResponseEntity.status(200).body(tokenRefreshResponse));
             return ResponseEntity.status(200).body(tokenRefreshResponse);   
         }
         return ResponseEntity.badRequest().build();

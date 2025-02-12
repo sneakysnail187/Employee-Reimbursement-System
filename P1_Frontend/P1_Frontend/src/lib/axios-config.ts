@@ -16,6 +16,7 @@ export const protectedInstance: AxiosInstance = axios.create({
     }
 });
 
+//attach an interceptor to automatically refresh JWT tokens on protected actions if they expire
 protectedInstance.interceptors.response.use(
     (response) => response,
     async (error) => {

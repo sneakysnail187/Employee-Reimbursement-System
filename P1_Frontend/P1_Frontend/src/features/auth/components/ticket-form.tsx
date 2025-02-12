@@ -24,6 +24,23 @@ interface TicketFormProps {
   setOpen: (value: boolean) => void;
 }
 
+/**
+ * Component for creating a ticket.
+ * 
+ * This component is a dialog that displays a form with the following fields:
+ * - Project: a text input for the project name.
+ * - Description: a text input for the description.
+ * - Amount: a number input for the amount.
+ * - Submit: a button that submits the form, which triggers the `useTicket` hook to make a POST request to the "/reimbursement" endpoint.
+ * 
+ * If the submission is successful, the dialog is closed and the form is reset.
+ * If the submission fails, the error message is displayed below the submit button.
+ * 
+ * @param open - A boolean indicating whether the dialog is open or not.
+ * @param setOpen - A function to set the `open` state of the dialog.
+ * 
+ * @returns The react component for creating a ticket.
+ */
 export function TicketForm({ open, setOpen }: TicketFormProps) {
   const { mutate: addTicket, isPending } = useTicket();
 

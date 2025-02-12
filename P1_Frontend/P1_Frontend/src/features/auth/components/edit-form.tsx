@@ -24,6 +24,19 @@ interface EditFormProps {
   setOpen: (value: boolean) => void;
 }
 
+/**
+ * Component for editing a ticket.
+ * 
+ * This component renders a dialog with a form for the user to input the new ticket details.
+ * It utilizes the Tanstack React Query `useEdit` hook to make a PATCH request to the "/reimbursement/edit/:reimbId" endpoint with the user provided ticket details.
+ * If the submission is successful, the form is reset and the dialog is closed.
+ * If the submission fails, the error message is displayed below the submit button.
+ * 
+ * @param open - A boolean indicating whether the dialog is open or not.
+ * @param setOpen - A function to set the `open` state of the dialog.
+ * 
+ * @returns The react component for editing a ticket.
+ */
 export function EditForm({ open, setOpen }: EditFormProps) {
   const { mutate: editTicket } = useEdit();
 
@@ -34,7 +47,7 @@ export function EditForm({ open, setOpen }: EditFormProps) {
       description: "",
       amount: 0
     },
-  }); // MAY NEED TO CUT THIS IF I CANT AT LEAST GET A STACK TRACE
+  }); 
 
   function onSubmit(values: EditSchema) {
     console.log(values);

@@ -10,6 +10,16 @@ export const Route = createFileRoute('/_protected/tickets/userTickets')({
   component: RouteComponent,
 })
 
+/**
+ * Component for the userTickets route.
+ *
+ * This component renders a centered card with three buttons (Create Ticket, Edit Ticket, Logout) and a TicketList component.
+ * When the Create Ticket button is clicked, it opens the TicketForm component.
+ * When the Edit Ticket button is clicked, it opens the EditForm component.
+ * When the Logout button is clicked, it logs the user out and redirects them to the login page.
+ *
+ * @returns {JSX.Element} The react component.
+ */
 function RouteComponent() {
   const [createOpen, setCreateOpen] = useState(false)
   const [editOpen, setEditOpen] = useState(false)
