@@ -15,6 +15,7 @@ A reimbursement system in which employee users can request reimbursements for ex
 - Project
 - Description
 - Amount
+
 When viewed by the employee, the ticket includes:
 - Ticket ID
 - Amount
