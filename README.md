@@ -23,7 +23,7 @@ When viewed by the employee, the ticket includes:
 - Status
 - Datetime Submitted
 
-When viewed by a manager the ticket additionally includes the username of the original poster
+**When viewed by a manager the ticket additionally includes the username of the original poster**
 
 2. Employees can edit the description and amount requested of tickets they've created
 3. Employees can view all the tickets they've submitted
