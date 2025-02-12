@@ -38,3 +38,7 @@ When viewed by a manager the ticket additionally includes the username of the or
 4. Managers can delete a user which will also delete all of their submitted tickets
 
 # ERD
+
+![image](https://github.com/user-attachments/assets/048a1a76-25ed-42bf-94c3-3a2106c8cac3)
+
+
