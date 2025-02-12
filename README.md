@@ -7,6 +7,7 @@ A reimbursement system in which employee users can request reimbursements for ex
 
 1. Users can register a new employee account 
 2. Users can login to their account with their credentials
+3. Users can logout after logging in
 
 # Employee User Stories
 
