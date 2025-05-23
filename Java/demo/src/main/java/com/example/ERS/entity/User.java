@@ -3,12 +3,9 @@ package com.example.ERS.entity;
 import java.util.List;
 
 import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.example.ERS.entity.Role;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -5,7 +5,6 @@ import java.time.OffsetDateTime;
 import com.example.ERS.entity.Reimbursement;
 
 public class ReimbursementResponse {
-    //here also
     private Integer reimbursementId;
     private String description;
     private Double amount;

@@ -1,14 +1,11 @@
 package com.ERS.Java.service;
 
-import com.ERS.Java.entity.User;
 import com.ERS.Java.entity.Reimbursement;
 import com.ERS.Java.repository.UserRepository;
 import com.ERS.Java.repository.ReimbursementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
