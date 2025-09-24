@@ -40,7 +40,7 @@ public class JwtService {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 30)) // 1 minutes
+                .setExpiration(new Date(System.currentTimeMillis() + 10000 * 60)) // 10 minutes
                 .signWith(getSigningKey())
                 .compact();
     }
